@@ -12,7 +12,7 @@ export function setUrl(
 }
 const Axios = axios.create({
 	// just set prod to true for using production server
-	baseURL: setUrl('http://192.168.11.15:4000', { prod: true }),
+	baseURL: setUrl('http://65.1.2.135:3000/api', { prod: true }),
 })
 
 Axios.interceptors.request.use(

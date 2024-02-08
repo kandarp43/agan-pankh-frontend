@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import AltAvatar from 'Assets/Icons/altImage.svg'
-import { queryClient } from 'App'
+import { queryClient } from '../Query'
 
 export function verifyLength(value, length) {
 	return value.length >= length
@@ -102,7 +101,7 @@ export const parseParams = (params = '') => {
 
 export function handleAlterImage(e, src) {
 	e.target.onerror = null
-	e.target.src = src || AltAvatar
+	e.target.src = src
 }
 
 export function getSortedColumns(TableColumns, urlData) {
