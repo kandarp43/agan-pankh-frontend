@@ -1,5 +1,4 @@
 import React from 'react'
-import { Card, CardBody } from '@nextui-org/react'
 import GoogleSignin from '../../components/google-sign'
 import { H1 } from '../../components/common/heading'
 

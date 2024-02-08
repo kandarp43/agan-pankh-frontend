@@ -1,36 +1,18 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './App.css'
-import Home from './routes/home'
-import AuthLayout from './layout/auth'
-import Login from './routes/login'
-import MainLayout from './layout/main'
+import { routes } from './routes'
+import Toaster from './components/Toaster'
+import { QueryClientProvider } from 'react-query'
+import { queryClient } from './Query'
 
-const router = createBrowserRouter([
-	{
-		element: <MainLayout />,
-		children: [
-			{
-				path: '/',
-				element: <Home />,
-			},
-		],
-	},
-	{
-		element: <AuthLayout />,
-		children: [
-			{
-				path: 'login',
-				element: <Login />,
-			},
-		],
-	},
-])
+const router = createBrowserRouter(routes)
 
 function App() {
 	return (
-		<div>
+		<QueryClientProvider client={queryClient}>
+			<Toaster limit={3} />
 			<RouterProvider router={router} />
-		</div>
+		</QueryClientProvider>
 	)
 }
 
