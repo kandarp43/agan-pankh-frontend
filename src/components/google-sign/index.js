@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import { g_signin } from '../../Query/auth/index.query'
 import { addToken } from '../../helpers'
@@ -17,15 +18,17 @@ import { useForm, Controller } from 'react-hook-form'
 export default function GoogleSignin({ ...props }) {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const authResponse = useRef()
+	const navigate = useNavigate()
 
 	const { mutate } = useMutation(g_signin, {
 		onSuccess: (response) => {
-			console.log({ response })
-			authResponse.current = response
-			if (response.isNew) {
+			authResponse.current = response.data.data.data
+			console.log({ response: authResponse.current })
+			if (authResponse.current?.isNew) {
 				onOpen()
 			} else {
-				addToken(response.token)
+				addToken(authResponse.current?.authToken)
+				navigate('/')
 			}
 		},
 	})
