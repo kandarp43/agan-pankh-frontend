@@ -9,7 +9,7 @@ export default function HeroSection() {
 		<div className='py-4'>
 			{/* <Chip></Chip> */}
 
-			<Chip
+			{/* <Chip
 				variant='shadow'
 				classNames={{
 					base: 'bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30',
@@ -17,7 +17,7 @@ export default function HeroSection() {
 				}}
 			>
 				All Tests will be visible here once they are available
-			</Chip>
+			</Chip> */}
 			<H3 className='my-3'>GPSC Tests</H3>
 			<ul>
 				<li className='p-2 leading-5 text-base hover:bg-success-400/20 transition rounded-md flex items-center cursor-pointer hover:ring-1 hover:ring-success-500'>
@@ -27,9 +27,10 @@ export default function HeroSection() {
 						</IconWrapper>
 					</span>
 					<span className='pe-2'>
-						New file New file New file New file New file New file New file New
-						file New file New file New file New file New file New file New file
-						New file New file New file
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
+						doloremque animi tenetur excepturi? Voluptatibus aperiam eveniet
+						dolore quas, voluptatum quod omnis. Quidem voluptatibus incidunt
+						quae tempore minima ab officia amet.
 					</span>
 				</li>
 			</ul>
