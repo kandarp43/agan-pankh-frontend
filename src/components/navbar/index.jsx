@@ -11,7 +11,6 @@ import {
 	Modal,
 	ModalContent,
 	ModalHeader,
-	ModalBody,
 	ModalFooter,
 	Button,
 	useDisclosure,
@@ -77,7 +76,10 @@ export default function HeaderBar({ noAuth }) {
 					) : null}
 				</div>
 			</Navbar>
-			<div className='w-full sm:p-1 p-2 bg-yellow-500 px-6' onClick={onOpen}>
+			<div
+				className='w-full sm:p-1 p-2 bg-yellow-500 px-6 cursor-default'
+				onClick={onOpen}
+			>
 				<div className='container mx-auto flex items-center text-xs font-bold'>
 					<span className='pr-2'>
 						Currently you haven't joined our premium plan, you can start giving
@@ -92,11 +94,10 @@ export default function HeaderBar({ noAuth }) {
 				<ModalContent>
 					{(onClose) => (
 						<>
-							<ModalHeader className='flex flex-col gap-1'></ModalHeader>
-							<ModalBody>
-								<p>Open this tests at only 499</p>
-							</ModalBody>
-							<ModalFooter>
+							<ModalHeader className='flex flex-col gap-1'>
+								Open this tests at only ₹499
+							</ModalHeader>
+							<ModalFooter className='pt-1 pb-6'>
 								<Button
 									fullWidth
 									className='!transition font-bold'

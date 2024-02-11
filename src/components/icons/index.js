@@ -1,35 +1,33 @@
-import React from 'react'
-export const LockIcon = (props) => (
-	<svg
-		xmlns='http://www.w3.org/2000/svg'
-		width='1em'
-		height='1em'
-		viewBox='0 0 24 24'
-	>
-		<g fill='none'>
+export function UnlockIcon(props) {
+	return (
+		<svg
+			xmlns='http://www.w3.org/2000/svg'
+			width='1em'
+			height='1em'
+			viewBox='0 0 24 24'
+			{...props}
+		>
 			<path
+				d='M18 10H9V7c0-1.654 1.346-3 3-3s3 1.346 3 3h2c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7.939 5.499A2.002 2.002 0 0 1 14 16a1.99 1.99 0 0 1-1 1.723V20h-2v-2.277a1.992 1.992 0 0 1-.939-2.224z'
 				fill='currentColor'
-				d='M5 10h14v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z'
-				opacity='.16'
 			></path>
+		</svg>
+	)
+}
+
+export function LockIcon(props) {
+	return (
+		<svg
+			xmlns='http://www.w3.org/2000/svg'
+			width='1em'
+			height='1em'
+			viewBox='0 0 24 24'
+			{...props}
+		>
 			<path
-				stroke='currentColor'
-				strokeLinecap='round'
-				strokeWidth='2'
-				d='M8 10V7a4 4 0 0 1 7.874-1'
+				d='M12 2C9.243 2 7 4.243 7 7v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7zm4 10.723V20h-2v-2.277a1.993 1.993 0 0 1 .567-3.677A2.001 2.001 0 0 1 14 16a1.99 1.99 0 0 1-1 1.723z'
+				fill='currentColor'
 			></path>
-			<path
-				stroke='currentColor'
-				strokeLinejoin='round'
-				strokeWidth='2'
-				d='M5 10h14v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z'
-			></path>
-			<path
-				stroke='currentColor'
-				strokeLinejoin='round'
-				strokeWidth='3'
-				d='M14.5 15.5h.01v.01h-.01z'
-			></path>
-		</g>
-	</svg>
-)
+		</svg>
+	)
+}
