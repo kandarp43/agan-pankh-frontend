@@ -56,11 +56,7 @@ export function removeToken() {
 }
 
 export function addToken(token, remember) {
-	if (remember) {
-		localStorage.setItem('token', token)
-	} else {
-		sessionStorage.setItem('token', token)
-	}
+	localStorage.setItem('token', token)
 }
 
 export const appendParams = (value) => {

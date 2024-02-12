@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { testById } from '../../Query/tests/index.query'
+import QuestionsList from '../../components/test-module/questions-list'
 
 export default function TestsById() {
 	const { id } = useParams()
@@ -12,5 +13,9 @@ export default function TestsById() {
 
 	console.log(data)
 
-	return <div>Tests By Id {id} </div>
+	return (
+		<div className='my-4 px-4 sm:px-0 container mx-auto'>
+			<QuestionsList />
+		</div>
+	)
 }

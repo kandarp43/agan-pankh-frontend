@@ -10,18 +10,44 @@ import {
 	Avatar,
 	Modal,
 	ModalContent,
-	ModalHeader,
+	ModalBody,
 	ModalFooter,
 	Button,
 	useDisclosure,
 } from '@nextui-org/react'
+import { getUser } from '../../Query/auth/index.query'
+import { useMutation, useQuery } from 'react-query'
+import { H3, H4 } from '../common/heading'
+import { useNavigate } from 'react-router-dom'
+import { removeToken } from '../../helpers'
+import { createPayment } from '../../Query/payment/index.query'
 
 export default function HeaderBar({ noAuth }) {
+	const navigate = useNavigate()
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
+	const { data } = useQuery('getUser', getUser, {
+		select: (d) => d.data.data,
+	})
+	const { mutate, isLoading } = useMutation(createPayment, {
+		onSuccess: (data) => {
+			if (data.data?.data?.short_url) {
+				window.location.href = data.data?.data?.short_url
+			}
+		},
+	})
 	useEffect(() => {
 		document.addEventListener('buyPlan', onOpen)
 		return () => document.removeEventListener('buyPlan', onOpen)
 	}, [])
+
+	function onBuyPremium() {
+		mutate()
+	}
+
+	function logout() {
+		navigate('/login')
+		removeToken()
+	}
 	return (
 		<>
 			<Navbar isBordered maxWidth='full'>
@@ -65,9 +91,9 @@ export default function HeaderBar({ noAuth }) {
 								<DropdownMenu aria-label='Profile Actions' variant='flat'>
 									<DropdownItem key='profile' isReadOnly className='h-14 gap-2'>
 										<p className='font-semibold'>Signed in as</p>
-										<p className='font-semibold'>exaample@example.com</p>
+										<p className='font-semibold'>{data?.email || null}</p>
 									</DropdownItem>
-									<DropdownItem key='logout' color='danger'>
+									<DropdownItem key='logout' color='danger' onClick={logout}>
 										Log Out
 									</DropdownItem>
 								</DropdownMenu>
@@ -76,34 +102,49 @@ export default function HeaderBar({ noAuth }) {
 					) : null}
 				</div>
 			</Navbar>
-			<div
-				className='w-full sm:p-1 p-2 bg-yellow-500 px-6 cursor-default'
-				onClick={onOpen}
-			>
-				<div className='container mx-auto flex items-center text-xs font-bold'>
-					<span className='pr-2'>
-						Currently you haven't joined our premium plan, you can start giving
-						Tests right after you subscribe to premium plan
-					</span>
-					<span className='cursor-pointer text-xs py-0.5 px-2 rounded-md border border-black text-center'>
-						Buy premium
-					</span>
+			{data && 'hasPreminum' in data && !data?.hasPreminum ? (
+				<div
+					className='w-full sm:p-1 p-2 bg-yellow-500 px-6 cursor-default'
+					onClick={onOpen}
+				>
+					<div className='container mx-auto flex items-center text-xs font-bold'>
+						<span className='pr-2'>
+							Currently you haven't joined our premium plan, you can start
+							giving Tests right after you subscribe to premium plan
+						</span>
+						<span className='cursor-pointer text-xs py-0.5 px-2 rounded-md border border-black text-center'>
+							Buy premium
+						</span>
+					</div>
 				</div>
-			</div>
-			<Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+			) : null}
+			<Modal
+				isOpen={isOpen}
+				size='sm'
+				onOpenChange={onOpenChange}
+				isDismissable={false}
+			>
 				<ModalContent>
 					{(onClose) => (
 						<>
-							<ModalHeader className='flex flex-col gap-1'>
-								Open this tests at only ₹499
-							</ModalHeader>
+							<ModalBody className='text-center'>
+								<H3>Unlock Premium Subscription</H3>
+								<p className='text-gray-800'>
+									Get unlimited access to all tests!
+								</p>
+								<H4 className='text-2xl text-warning'>Rs. 499</H4>
+								<p className='text-sm text-gray-800'>One-time payment!</p>
+							</ModalBody>
 							<ModalFooter className='pt-1 pb-6'>
 								<Button
 									fullWidth
 									className='!transition font-bold'
 									variant='ghost'
-									color='secondary'
-									onPress={onClose}
+									color='warning'
+									isLoading={isLoading}
+									onPress={() => {
+										onBuyPremium()
+									}}
 								>
 									Buy Plan
 								</Button>

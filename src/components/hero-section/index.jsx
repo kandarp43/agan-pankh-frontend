@@ -16,6 +16,7 @@ import {
 	Button,
 	useDisclosure,
 } from '@nextui-org/react'
+import { Card, CardBody } from '@nextui-org/react'
 import { emitEvent } from '../../helpers'
 
 export default function HeroSection() {
@@ -24,6 +25,7 @@ export default function HeroSection() {
 	const navigate = useNavigate()
 
 	function onTestClick(test) {
+		console.log('123')
 		if (test.isLocked) {
 			emitEvent('buyPlan')
 		} else if (!test?.testGiven) {
@@ -50,62 +52,70 @@ export default function HeroSection() {
 			) : null}
 			<ul>
 				{data?.map((test) => {
-					test.isLocked = false
+					// test.isLocked = false
 					return (
-						<li
+						<Card
 							key={test?._id}
-							onClick={() => onTestClick(test)}
-							className={`p-2 leading-5 text-base ${
+							className={`my-3 leading-5 text-base ${
 								test?.isLocked
 									? 'hover:bg-danger/10 hover:ring-danger-500'
 									: 'hover:bg-success/10 hover:ring-success-500'
 							} transition rounded-md flex items-center cursor-pointer hover:ring-1`}
 						>
-							<span className='pe-2'>
-								{test?.isLocked ? (
-									<IconWrapper className='bg-danger/10 text-danger'>
-										<LockIcon className='text-lg' />
-									</IconWrapper>
-								) : (
-									<IconWrapper className='bg-success/10 text-success'>
-										<UnlockIcon className='text-lg' />
-									</IconWrapper>
-								)}
-							</span>
-							<div className='pe-2 flex justify-between items-center w-full font-semibold'>
-								<span>{test?.testName}</span>
-								<div className='text-xs flex items-center gap-2'>
-									{test?.testGiven ? (
-										<Chip
-											color='success'
-											variant='bordered'
-											size='sm'
-											classNames={{ content: 'text-sm' }}
-										>
-											View Results
-										</Chip>
-									) : null}
-									{test?.testRunning ? (
-										<Chip
-											color='success'
-											variant='bordered'
-											size='sm'
-											classNames={{ content: 'text-sm' }}
-										>
-											Ongoing
-										</Chip>
-									) : null}
-									<div className='text-xs'>
-										<p>
-											{test?.totalQuestions
-												? `${test?.totalQuestions} Que's`
-												: null}
-										</p>
-										<p>{test?.duration ? `${test?.duration} Mins` : null}</p>
+							<CardBody
+								className='overflow-visible'
+								onClick={() => onTestClick(test)}
+							>
+								<li className={`flex items-center cursor-pointer`}>
+									<span className='pe-2'>
+										{test?.isLocked ? (
+											<IconWrapper className='bg-danger/10 text-danger'>
+												<LockIcon className='text-lg' />
+											</IconWrapper>
+										) : (
+											<IconWrapper className='bg-success/10 text-success'>
+												<UnlockIcon className='text-lg' />
+											</IconWrapper>
+										)}
+									</span>
+									<div className='pe-2 flex justify-between items-center w-full font-semibold'>
+										<span>{test?.testName}</span>
+										<div className='text-xs flex items-center gap-2'>
+											{test?.testGiven ? (
+												<Chip
+													color='success'
+													variant='bordered'
+													size='sm'
+													classNames={{ content: 'text-sm' }}
+												>
+													View Results
+												</Chip>
+											) : null}
+											{test?.testRunning ? (
+												<Chip
+													color='success'
+													variant='bordered'
+													size='sm'
+													classNames={{ content: 'text-sm' }}
+												>
+													Ongoing
+												</Chip>
+											) : null}
+											<div className='text-sm'>
+												<p>
+													{test?.totalQuestions
+														? `${test?.totalQuestions} Que's`
+														: null}
+												</p>
+												<p>
+													{test?.duration ? `${test?.duration} Mins` : null}
+												</p>
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
-						</li>
+								</li>
+							</CardBody>
+						</Card>
 					)
 				})}
 			</ul>
