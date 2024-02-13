@@ -11,11 +11,9 @@ export default function TestsById() {
 		select: (d) => d.data,
 	})
 
-	console.log(data)
-
 	return (
 		<div className='my-4 px-4 sm:px-0 container mx-auto'>
-			<QuestionsList />
+			<QuestionsList key={id} testData={data?.data?.data} testId={id} />
 		</div>
 	)
 }

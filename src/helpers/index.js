@@ -240,3 +240,16 @@ export const dateCheck = (data) => {
 		return new Date(Number(data))
 	}
 }
+
+export function groupBy(xs, fn) {
+	return xs?.reduce(function (rv, x) {
+		x.key = fn(x)
+		// if (x.key) return rv
+		if (rv[fn(x)]) {
+			rv[fn(x)]?.push(x)
+		} else {
+			rv[fn(x)] = [x]
+		}
+		return rv
+	}, {})
+}
