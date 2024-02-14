@@ -30,7 +30,7 @@ export default function UpdateUserModal({
 		reset(data)
 	}, [data])
 	function onSubmit(data) {
-		updateUserData({ contactNo: data?.contactNo, city: data?.city })
+		updateUserData({ data: { contactNo: data?.contactNo, city: data?.city } })
 	}
 	return (
 		<>
