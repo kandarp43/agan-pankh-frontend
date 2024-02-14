@@ -34,17 +34,13 @@ export default function UpdateUserModal({
 	}
 	return (
 		<>
-			<Modal
-				isOpen={isOpen}
-				onOpenChange={onOpenChange}
-				isDismissable={false}
-				hideCloseButton
-				backdrop='blur'
-			>
+			<Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop='blur'>
 				<ModalContent>
 					{() => (
 						<form onSubmit={handleSubmit(onSubmit)}>
-							<ModalHeader className='flex flex-col gap-1'>Log in</ModalHeader>
+							<ModalHeader className='flex flex-col gap-1'>
+								Update profile
+							</ModalHeader>
 							<ModalBody>
 								<Controller
 									control={control}

@@ -75,7 +75,7 @@ export default function GoogleSignin({ ...props }) {
 
 	const { control, handleSubmit } = useForm()
 	function onSubmit(data) {
-		updateUserData(data)
+		updateUserData({ data, authToken: authResponse.current?.authToken })
 	}
 	return (
 		<>

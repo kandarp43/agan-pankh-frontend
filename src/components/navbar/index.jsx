@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom'
 import { removeToken } from '../../helpers'
 import { createPayment } from '../../Query/payment/index.query'
 import UpdateUserModal from '../updateUserModal'
+import logo from '../../assets/images/agan-pankh.png'
 
 export default function HeaderBar({ noAuth }) {
 	const navigate = useNavigate()
@@ -54,15 +55,16 @@ export default function HeaderBar({ noAuth }) {
 	}
 
 	function logout() {
-		navigate('/login')
 		removeToken()
+		navigate('/login')
 	}
 	return (
 		<>
 			<Navbar isBordered maxWidth='full'>
 				<div className='container mx-auto flex items-center justify-between'>
-					<NavbarBrand>
-						<p className='font-bold text-inherit'>Agan Pankh</p>
+					<NavbarBrand className='cursor-pointer' onClick={() => navigate('/')}>
+						<img src={logo} alt='logo' className='h-12' />
+						<p className='pl-2 font-bold text-inherit'>Agan Pankh</p>
 					</NavbarBrand>
 
 					{/* <NavbarContxent className='hidden sm:flex gap-4' justify='center'>
@@ -114,7 +116,7 @@ export default function HeaderBar({ noAuth }) {
 					) : null}
 				</div>
 			</Navbar>
-			{data && 'hasPreminum' in data && !data?.hasPreminum ? (
+			{!noAuth && data && 'hasPreminum' in data && !data?.hasPreminum ? (
 				<div
 					className='w-full sm:p-1 p-2 bg-yellow-500 px-6 cursor-default'
 					onClick={onOpen}
