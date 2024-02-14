@@ -96,7 +96,7 @@ export default function HeaderBar({ noAuth }) {
 										color='secondary'
 										name='Jason Hughes'
 										size='sm'
-										src='https://i.pravatar.cc/150?u=a042581f4e29126704d'
+										src='https://i.pravatar.cc/150?u=a042581s4e29126704d'
 									/>
 								</DropdownTrigger>
 								<DropdownMenu aria-label='Profile Actions' variant='flat'>
@@ -105,7 +105,7 @@ export default function HeaderBar({ noAuth }) {
 										<p className='font-semibold'>{data?.email || null}</p>
 									</DropdownItem>
 									<DropdownItem key='update-profile' onClick={onOpenUser}>
-										update profile
+										Update profile
 									</DropdownItem>
 									<DropdownItem key='logout' color='danger' onClick={logout}>
 										Log Out

@@ -10,7 +10,7 @@ export function submitTestAnswer({ id, data }) {
 	return Axios.post(`/v1/tests/post-answer/${id}`, data)
 }
 export function submitTest({ id, data }) {
-	return Axios.post(`/v1/test-results/submit-answer/${id}`, data)
+	return Axios.post(`/v1/test-results/submit-test/${id}`, data)
 }
 export function startTest({ id, data }) {
 	return Axios.post(`/v1/tests/test-session/start/${id}`, data)

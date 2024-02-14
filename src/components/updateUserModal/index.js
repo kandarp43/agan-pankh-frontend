@@ -21,8 +21,8 @@ export default function UpdateUserModal({
 	const queryClient = useQueryClient()
 	const { mutate: updateUserData } = useMutation(updateUser, {
 		onSuccess: () => {
+			onOpenChange()
 			queryClient.invalidateQueries('getUser')
-			onOpen()
 		},
 	})
 	const { control, handleSubmit, reset } = useForm()

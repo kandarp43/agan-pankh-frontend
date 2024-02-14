@@ -36,7 +36,7 @@ export default function HeroSection() {
 	function onTestClick(test) {
 		if (userData && !userData?.hasPreminum) {
 			emitEvent('buyPlan')
-		} else if (test?.isLocked) {
+		} else if (test?.isLocked && !test?.testGiven) {
 			toaster(
 				'Please complete the previous test first to unlock new Test',
 				'warning'
@@ -111,7 +111,7 @@ export default function HeroSection() {
 													size='sm'
 													classNames={{ content: 'text-sm' }}
 												>
-													View Results
+													score: {test?.score}
 												</Chip>
 											) : null}
 											{test?.isOnGoing ? (

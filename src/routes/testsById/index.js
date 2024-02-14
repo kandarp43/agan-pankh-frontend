@@ -22,7 +22,14 @@ export default function TestsById() {
 					<CircularProgress color='secondary' aria-label='Loading...' />
 				</div>
 			) : null}
-			<QuestionsList key={id} testData={data?.test} testId={id} />
+			{data?.test ? (
+				<QuestionsList
+					key={id}
+					testData={data?.test}
+					testId={id}
+					isLoading={isLoading}
+				/>
+			) : null}
 		</div>
 	)
 }

@@ -3,17 +3,24 @@ import { H1, H2 } from '../../common/heading'
 import { RadioGroup, Radio } from '@nextui-org/react'
 import { useMutation } from 'react-query'
 import { groupBy } from '../../../helpers'
-import { Card, CardHeader, CardBody } from '@nextui-org/react'
-import { submitTestAnswer } from '../../../Query/tests/index.query'
+import { Button, Card, CardHeader, CardBody } from '@nextui-org/react'
+import { submitTest, submitTestAnswer } from '../../../Query/tests/index.query'
 
-export default function QuestionsList({ testData, testId }) {
+const shortTitle = {
+	G: 'Gujarati',
+	E: 'English',
+	QA: 'Quantitative Aptitude',
+	R: 'Reasoning',
+}
+
+export default function QuestionsList({ testData, testId, isLoading }) {
 	const counter = useRef(0)
 	const [selectedAnswers, setSelectedAnswers] = useState([])
 	const categorizedQuestions = useMemo(() => {
 		let catQuestions = groupBy(testData?.questions, (que) => que?.testSections)
 		const data = []
 		for (const key in catQuestions) {
-			data.push({ key, questionList: catQuestions[key] })
+			data.push({ key: shortTitle[key], questionList: catQuestions[key] })
 		}
 		return data
 	}, [testData?.testName])
@@ -40,9 +47,12 @@ export default function QuestionsList({ testData, testId }) {
 		}
 	}
 
+	const { mutate: submitAnswersApi } = useMutation(submitTest)
+
 	const handleSubmit = () => {
 		// Do something with the selected answers, e.g., check them against correct answers and show feedback
 		console.log('Selected answers:', selectedAnswers)
+		submitAnswersApi({ id: testId, data: { answers: selectedAnswers } })
 
 		// Reset for next set of questions
 		setSelectedAnswers([])
@@ -57,7 +67,7 @@ export default function QuestionsList({ testData, testId }) {
 
 	counter.current = 0
 	return (
-		<div>
+		<div className='px-2'>
 			{/* <PremiumCard /> */}
 			<H1>{testData?.testName}</H1>
 			<ul className='que-main-list my-3'>
@@ -103,34 +113,14 @@ export default function QuestionsList({ testData, testId }) {
 						)
 					})}
 			</ul>
+			<Button
+				isLoading={isLoading}
+				onPress={handleSubmit}
+				color='warning'
+				variant='ghost'
+			>
+				Submit Answers
+			</Button>
 		</div>
-		// <Container css={{ maxWidth: '700px' }}>
-		//   <Heading css={{ marginBottom: '$16' }}>Multiple Choice Questions</Heading>
-		//   <List css={{ borderTop: '$gray$2' }}>
-		//     {questionData.map((question, questionIndex) => (
-		//       <ListItem key={questionIndex}>
-		//         <List.Item css={{ display: 'flex', justifyContent: 'space-between' }}>
-		//           <span>{question.question}</span>
-		//           <Button size="sm" variant="auto">
-		//             {questionIndex + 1} of {questionData.length}
-		//           </Button>
-		//         </List.Item>
-		//         <RadioGroup
-		//           value={selectedAnswers[questionIndex]}
-		//           onChange={(value) => handleRadioChange(value, questionIndex)}
-		//         >
-		//           {question.options.map((option) => (
-		//             <Radio key={option.value} value={option.value}>
-		//               {option.label}
-		//             </Radio>
-		//           ))}
-		//         </RadioGroup>
-		//       </ListItem>
-		//     ))}
-		//   </List>
-		//   <Button onPress={handleSubmit} css={{ marginTop: '$24' }}>
-		//     Submit Answers
-		//   </Button>
-		// </Container>
 	)
 }
