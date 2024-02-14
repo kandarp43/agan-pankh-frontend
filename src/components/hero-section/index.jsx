@@ -34,7 +34,7 @@ export default function HeroSection() {
 	const { mutate: startTestApi } = useMutation(startTest)
 
 	function onTestClick(test) {
-		if (!userData && !userData?.hasPreminum) {
+		if (userData && !userData?.hasPreminum) {
 			emitEvent('buyPlan')
 		} else if (test?.isLocked) {
 			toaster(
