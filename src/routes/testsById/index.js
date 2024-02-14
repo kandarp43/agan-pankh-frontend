@@ -26,6 +26,7 @@ export default function TestsById() {
 				<QuestionsList
 					key={id}
 					testData={data?.test}
+					attempted={data?.questionsAttempted}
 					testId={id}
 					isLoading={isLoading}
 				/>

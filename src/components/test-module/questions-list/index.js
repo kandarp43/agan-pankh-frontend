@@ -1,10 +1,11 @@
 import React, { useMemo, useRef, useState } from 'react'
 import { H1, H2 } from '../../common/heading'
 import { RadioGroup, Radio } from '@nextui-org/react'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { groupBy } from '../../../helpers'
 import { Button, Card, CardHeader, CardBody } from '@nextui-org/react'
 import { submitTest, submitTestAnswer } from '../../../Query/tests/index.query'
+import { useNavigate } from 'react-router-dom'
 
 const shortTitle = {
 	G: 'Gujarati',
@@ -13,9 +14,16 @@ const shortTitle = {
 	R: 'Reasoning',
 }
 
-export default function QuestionsList({ testData, testId, isLoading }) {
+export default function QuestionsList({
+	testData,
+	testId,
+	isLoading,
+	attempted,
+}) {
 	const counter = useRef(0)
-	const [selectedAnswers, setSelectedAnswers] = useState([])
+	const [selectedAnswers, setSelectedAnswers] = useState(
+		attempted?.length ? attempted : []
+	)
 	const categorizedQuestions = useMemo(() => {
 		let catQuestions = groupBy(testData?.questions, (que) => que?.testSections)
 		const data = []
@@ -47,15 +55,26 @@ export default function QuestionsList({ testData, testId, isLoading }) {
 		}
 	}
 
-	const { mutate: submitAnswersApi } = useMutation(submitTest)
+	const { mutate: submitAnswersApi, isLoading: isSubmitting } =
+		useMutation(submitTest)
 
+	const navigate = useNavigate()
+	const queryClient = useQueryClient()
 	const handleSubmit = () => {
 		// Do something with the selected answers, e.g., check them against correct answers and show feedback
 		console.log('Selected answers:', selectedAnswers)
-		submitAnswersApi({ id: testId, data: { answers: selectedAnswers } })
+		submitAnswersApi(
+			{ id: testId, data: { answers: selectedAnswers } },
+			{
+				onSuccess: () => {
+					setSelectedAnswers([])
+					navigate('/')
+					queryClient.invalidateQueries('getTestList')
+				},
+			}
+		)
 
 		// Reset for next set of questions
-		setSelectedAnswers([])
 	}
 
 	function selectedOption({ questionIndex, options }) {
@@ -70,7 +89,7 @@ export default function QuestionsList({ testData, testId, isLoading }) {
 		<div className='px-2'>
 			{/* <PremiumCard /> */}
 			<H1>{testData?.testName}</H1>
-			<ul className='que-main-list my-3'>
+			<ul className='que-main-list my-3 mb-16'>
 				{categorizedQuestions &&
 					categorizedQuestions?.map((cat) => {
 						return (
@@ -113,14 +132,17 @@ export default function QuestionsList({ testData, testId, isLoading }) {
 						)
 					})}
 			</ul>
-			<Button
-				isLoading={isLoading}
-				onPress={handleSubmit}
-				color='warning'
-				variant='ghost'
-			>
-				Submit Answers
-			</Button>
+			<div className='w-full fixed bottom-0 left-0 bg-white p-2 z-50 flex items-center justify-center'>
+				<Button
+					isLoading={isLoading || isSubmitting}
+					onPress={handleSubmit}
+					className='!transition font-bold'
+					variant='ghost'
+					color='warning'
+				>
+					Submit Answers
+				</Button>
+			</div>
 		</div>
 	)
 }
