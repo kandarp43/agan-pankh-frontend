@@ -1,8 +1,6 @@
-import React, { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useMutation } from 'react-query'
-import { g_signin, updateUser } from '../../Query/auth/index.query'
-import { addToken } from '../../helpers'
+import React, { useEffect } from 'react'
+import { useMutation, useQueryClient } from 'react-query'
+import { updateUser } from '../../Query/auth/index.query'
 import {
 	Modal,
 	ModalContent,
@@ -10,76 +8,32 @@ import {
 	ModalBody,
 	ModalFooter,
 	Button,
-	useDisclosure,
 	Input,
 } from '@nextui-org/react'
 import { useForm, Controller } from 'react-hook-form'
 
-export default function GoogleSignin({ ...props }) {
-	const { isOpen, onOpen, onOpenChange } = useDisclosure()
-	const authResponse = useRef()
-	const navigate = useNavigate()
-
-	const { mutate } = useMutation(g_signin, {
-		onSuccess: (response) => {
-			authResponse.current = response.data.data.data
-			console.log({ response: authResponse.current })
-			if (authResponse.current?.isNew) {
-				onOpen()
-			} else {
-				addToken(authResponse.current?.authToken)
-				navigate('/')
-			}
-		},
-	})
-
+export default function UpdateUserModal({
+	isOpen,
+	onOpen,
+	onOpenChange,
+	data,
+}) {
+	const queryClient = useQueryClient()
 	const { mutate: updateUserData } = useMutation(updateUser, {
 		onSuccess: () => {
-			addToken(authResponse.current?.authToken)
-			navigate('/')
+			queryClient.invalidateQueries('getUser')
+			onOpen()
 		},
 	})
-
-	function setupGoogleLogin() {
-		const { google } = window
-		if (google) {
-			google.accounts.id.initialize({
-				client_id:
-					'551543918721-pa8bnj7h29bl5bs984cjr9f1snflqf7l.apps.googleusercontent.com',
-				callback: async (response) => {
-					console.log(response.credential, 'G-token')
-					mutate(response.credential)
-				},
-			})
-			google.accounts.id.renderButton(
-				document.getElementById('google-sign-btn'),
-				{
-					shape: 'rectangular',
-					theme: 'filled_blue',
-				}
-			)
-		}
-	}
-
+	const { control, handleSubmit, reset } = useForm()
 	useEffect(() => {
-		const url = 'https://accounts.google.com/gsi/client'
-		const script = document.createElement('script')
-		script.src = url
-		script.async = true
-		// script.setAttribute('strategy', 'lazyOnload')
-		document.head.appendChild(script)
-		script.onload = () => {
-			setupGoogleLogin()
-		}
-	}, [])
-
-	const { control, handleSubmit } = useForm()
+		reset(data)
+	}, [data])
 	function onSubmit(data) {
-		updateUserData(data)
+		updateUserData({ contactNo: data?.contactNo, city: data?.city })
 	}
 	return (
 		<>
-			<div id='google-sign-btn' {...props}></div>
 			<Modal
 				isOpen={isOpen}
 				onOpenChange={onOpenChange}

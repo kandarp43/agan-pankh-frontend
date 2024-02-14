@@ -70,6 +70,7 @@ function Toaster({ limit }) {
 						<div
 							key={id}
 							onClose={() => handleClose(id)}
+							className='p-2 m-1'
 							style={{
 								backgroundColor: toastStyle(type)?.backgroundColor,
 								border: `1px solid ${toastStyle(type)?.color}`,
@@ -81,7 +82,7 @@ function Toaster({ limit }) {
 						>
 							<div className='flex justify-between items-center '>
 								<div className='flex items-center'>{message}</div>
-								<div onClick={() => handleClose(id)}>cancel</div>
+								{/* <div onClick={() => handleClose(id)}>cancel</div> */}
 							</div>
 						</div>
 					)

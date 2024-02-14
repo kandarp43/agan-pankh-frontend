@@ -10,10 +10,9 @@ export default function TestsById() {
 		enabled: !!id,
 		select: (d) => d.data,
 	})
-
 	return (
 		<div className='my-4 px-4 sm:px-0 container mx-auto'>
-			<QuestionsList key={id} testData={data?.data?.data} testId={id} />
+			<QuestionsList key={id} testData={data?.test} testId={id} />
 		</div>
 	)
 }

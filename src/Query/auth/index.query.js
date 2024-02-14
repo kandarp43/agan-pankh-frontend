@@ -6,6 +6,6 @@ export function g_signin(idToken) {
 export function getUser() {
 	return Axios.get('/v1/users')
 }
-export function updateUser() {
-	return Axios.get('/v1/users/update/:id')
+export function updateUser(data) {
+	return Axios.put('/v1/users/update', data)
 }

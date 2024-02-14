@@ -1,10 +1,10 @@
 import React, { useRef } from 'react'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { IconWrapper } from '../common/icon-wrapper'
 import { LockIcon, UnlockIcon } from '../icons'
 import { H3 } from '../common/heading'
-import { testsList } from '../../Query/tests/index.query'
+import { startTest, testsList } from '../../Query/tests/index.query'
 import {
 	CircularProgress,
 	Chip,
@@ -17,31 +17,54 @@ import {
 	useDisclosure,
 } from '@nextui-org/react'
 import { Card, CardBody } from '@nextui-org/react'
-import { emitEvent } from '../../helpers'
+import { emitEvent, toaster } from '../../helpers'
 
 export default function HeroSection() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const selectedTest = useRef()
 	const navigate = useNavigate()
+	const queryClient = useQueryClient()
+
+	const { data: userData } = useQuery(
+		['getUser'],
+		() => queryClient.getQueryData('getUser'),
+		{ select: (d) => d.data.data }
+	)
+
+	const { mutate: startTestApi } = useMutation(startTest)
 
 	function onTestClick(test) {
-		console.log('123')
-		if (test.isLocked) {
+		if (!userData && !userData?.hasPreminum) {
 			emitEvent('buyPlan')
+		} else if (test?.isLocked) {
+			toaster(
+				'Please complete the previous test first to unlock new Test',
+				'warning'
+			)
 		} else if (!test?.testGiven) {
 			selectedTest.current = test
 			onOpen()
 		}
 	}
 
-	function onTestStart(id) {
-		navigate(`/test/${id}`)
+	function onTestStart({ _id: id, isOnGoing }) {
+		if (isOnGoing) {
+			navigate(`/test/${id}`)
+		} else {
+			startTestApi(
+				{ id, data: { testId: id } },
+				{
+					onSuccess: (data) => {
+						navigate(`/test/${id}`)
+					},
+				}
+			)
+		}
 	}
 
 	const { data, isLoading } = useQuery(['getTestList'], testsList, {
 		select: (d) => d?.data?.data?.data,
 	})
-	console.log(data)
 	return (
 		<div className='py-4'>
 			<H3 className='my-3'>GPSC Tests</H3>
@@ -78,9 +101,9 @@ export default function HeroSection() {
 											</IconWrapper>
 										)}
 									</span>
-									<div className='pe-2 flex justify-between items-center w-full font-semibold'>
+									<div className='pe-2 flex flex-col sm:items-center sm:flex-row justify-between w-full font-semibold'>
 										<span>{test?.testName}</span>
-										<div className='text-xs flex items-center gap-2'>
+										<div className='text-xs flex flex-col sm:flex-row sm:items-center gap-2'>
 											{test?.testGiven ? (
 												<Chip
 													color='success'
@@ -91,9 +114,9 @@ export default function HeroSection() {
 													View Results
 												</Chip>
 											) : null}
-											{test?.testRunning ? (
+											{test?.isOnGoing ? (
 												<Chip
-													color='success'
+													color='warning'
 													variant='bordered'
 													size='sm'
 													classNames={{ content: 'text-sm' }}
@@ -101,8 +124,8 @@ export default function HeroSection() {
 													Ongoing
 												</Chip>
 											) : null}
-											<div className='text-sm'>
-												<p>
+											<div className='text-sm flex sm:block text-zinc-800/70'>
+												<p className='pe-2'>
 													{test?.totalQuestions
 														? `${test?.totalQuestions} Que's`
 														: null}
@@ -156,10 +179,12 @@ export default function HeroSection() {
 									color='secondary'
 									onPress={() => {
 										onClose()
-										onTestStart(selectedTest.current?._id)
+										onTestStart(selectedTest.current)
 									}}
 								>
-									Start Test
+									{!selectedTest.current?.isOnGoing
+										? 'Start Test'
+										: 'Continue Test'}
 								</Button>
 							</ModalFooter>
 						</>

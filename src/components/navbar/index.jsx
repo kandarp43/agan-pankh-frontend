@@ -21,13 +21,22 @@ import { H3, H4 } from '../common/heading'
 import { useNavigate } from 'react-router-dom'
 import { removeToken } from '../../helpers'
 import { createPayment } from '../../Query/payment/index.query'
+import UpdateUserModal from '../updateUserModal'
 
 export default function HeaderBar({ noAuth }) {
 	const navigate = useNavigate()
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
+	const {
+		isOpen: isOpenUser,
+		onOpen: onOpenUser,
+		onOpenChange: onOpenChangeUser,
+	} = useDisclosure()
+
 	const { data } = useQuery('getUser', getUser, {
 		select: (d) => d.data.data,
+		enabled: !noAuth,
 	})
+
 	const { mutate, isLoading } = useMutation(createPayment, {
 		onSuccess: (data) => {
 			if (data.data?.data?.short_url) {
@@ -93,6 +102,9 @@ export default function HeaderBar({ noAuth }) {
 										<p className='font-semibold'>Signed in as</p>
 										<p className='font-semibold'>{data?.email || null}</p>
 									</DropdownItem>
+									<DropdownItem key='update-profile' onClick={onOpenUser}>
+										update profile
+									</DropdownItem>
 									<DropdownItem key='logout' color='danger' onClick={logout}>
 										Log Out
 									</DropdownItem>
@@ -153,6 +165,14 @@ export default function HeaderBar({ noAuth }) {
 					)}
 				</ModalContent>
 			</Modal>
+			<UpdateUserModal
+				{...{
+					isOpen: isOpenUser,
+					onOpen: onOpenUser,
+					onOpenChange: onOpenChangeUser,
+					data,
+				}}
+			/>
 		</>
 	)
 }
