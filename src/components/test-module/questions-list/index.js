@@ -197,18 +197,18 @@ export default function QuestionsList({
 							</div>
 							<RadioGroup
 								classNames={{
-									label: 'font-bold text-black select-none w-full',
+									label: 'font-bold text-black select-none w-full mb-3',
 								}}
 								className='mb-4'
 								label={
-									<>
+									<div classN>
 										<p>
 											Q{currentQue + 1}. {que?.questionText}
 										</p>
-										<div className='hidden my-2 sm:my-4 ml-3 object-contain'>
+										<div className='hidden mt-2 ml-3 object-contain'>
 											<img src={testingImage} />
 										</div>
-									</>
+									</div>
 								}
 								key={que?.questionText}
 								color='warning'
