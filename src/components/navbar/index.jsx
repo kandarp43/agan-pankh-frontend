@@ -64,7 +64,7 @@ export default function HeaderBar({ noAuth }) {
 				<div className='container mx-auto flex items-center justify-between'>
 					<NavbarBrand className='cursor-pointer' onClick={() => navigate('/')}>
 						<img src={logo} alt='logo' className='h-12' />
-						<p className='pl-2 font-bold text-inherit'>Agan Pankh</p>
+						<p className='pl-2 font-bold text-inherit'>AganPankh</p>
 					</NavbarBrand>
 
 					{/* <NavbarContxent className='hidden sm:flex gap-4' justify='center'>

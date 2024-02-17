@@ -205,12 +205,12 @@ export const countDownCalculations = (dateData) => {
 	let diff =
 		(Date.parse(new Date(Number(dateData))) - Date.parse(new Date())) / 1000
 	const timeLeft = {
-		years: 0,
-		days: 0,
-		hours: 0,
-		min: 0,
-		sec: 0,
-		millisec: 0,
+		years: '00',
+		days: '00',
+		hours: '00',
+		min: '00',
+		sec: '00',
+		millisec: '00',
 	}
 
 	if (diff >= 365.25 * 86400) {
@@ -218,18 +218,21 @@ export const countDownCalculations = (dateData) => {
 		diff -= timeLeft.years * 365.25 * 86400
 	}
 	if (diff >= 86400) {
-		timeLeft.days = Math.floor(diff / 86400)
+		const days = Math.floor(diff / 86400)
+		timeLeft.days = days < 10 && days >= 0 ? `0${days}` : days
 		diff -= timeLeft.days * 86400
 	}
 	if (diff >= 3600) {
-		timeLeft.hours = Math.floor(diff / 3600)
+		const hours = Math.floor(diff / 3600)
+		timeLeft.hours = hours < 10 && hours >= 0 ? `0${hours}` : hours
 		diff -= timeLeft.hours * 3600
 	}
 	if (diff >= 60) {
-		timeLeft.min = Math.floor(diff / 60)
+		const minutes = Math.floor(diff / 60)
+		timeLeft.min = minutes < 10 && minutes >= 0 ? `0${minutes}` : minutes
 		diff -= timeLeft.min * 60
 	}
-	timeLeft.sec = diff
+	timeLeft.sec = diff < 10 && diff >= 0 ? `0${diff}` : diff
 	return timeLeft
 }
 

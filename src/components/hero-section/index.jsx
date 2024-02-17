@@ -1,10 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { IconWrapper } from '../common/icon-wrapper'
 import { LockIcon, UnlockIcon } from '../icons'
 import { H3 } from '../common/heading'
 import { startTest, testsList } from '../../Query/tests/index.query'
+import { Checkbox } from '@nextui-org/react'
 import {
 	CircularProgress,
 	Chip,
@@ -21,6 +22,7 @@ import { emitEvent, toaster } from '../../helpers'
 
 export default function HeroSection() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
+	const [isConfirm, setConfirm] = useState(false)
 	const selectedTest = useRef()
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
@@ -67,7 +69,7 @@ export default function HeroSection() {
 	})
 	return (
 		<div className='py-4'>
-			<H3 className='my-3'>GPSC Tests</H3>
+			<H3 className='my-3'>CCE TEST</H3>
 			{isLoading ? (
 				<div className='w-full flex items-center justify-center'>
 					<CircularProgress color='secondary' aria-label='Loading...' />
@@ -75,7 +77,6 @@ export default function HeroSection() {
 			) : null}
 			<ul>
 				{data?.map((test) => {
-					// test.isLocked = false
 					return (
 						<Card
 							key={test?._id}
@@ -143,7 +144,13 @@ export default function HeroSection() {
 				})}
 			</ul>
 
-			<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+			<Modal
+				isOpen={isOpen}
+				onOpenChange={(d) => {
+					setConfirm(false)
+					onOpenChange(d)
+				}}
+			>
 				<ModalContent>
 					{(onClose) => (
 						<>
@@ -169,11 +176,21 @@ export default function HeroSection() {
 										After 60 minutes you will not be able to answer any of the
 										questions.
 									</li>
+									<li className='leading-5 text-xs	'>
+										<Checkbox
+											size='sm'
+											isSelected={isConfirm}
+											onValueChange={setConfirm}
+										>
+											I read all terms carefully and I agree to start the Test
+										</Checkbox>
+									</li>
 								</ul>
 							</ModalBody>
 							<ModalFooter className='pt-1 pb-6'>
 								<Button
 									fullWidth
+									isDisabled={!isConfirm}
 									className='!transition font-bold'
 									variant='ghost'
 									color='secondary'

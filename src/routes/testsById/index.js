@@ -16,7 +16,7 @@ export default function TestsById() {
 		}
 	)
 	return (
-		<div className='my-4 px-4 sm:px-0 container mx-auto'>
+		<div className='my-4 sm:px-4 px-0 mx-1 '>
 			{isLoading ? (
 				<div className='w-full flex items-center justify-center'>
 					<CircularProgress color='secondary' aria-label='Loading...' />
@@ -25,6 +25,7 @@ export default function TestsById() {
 			{data?.test ? (
 				<QuestionsList
 					key={id}
+					testSession={data?.testSession}
 					testData={data?.test}
 					attempted={data?.questionsAttempted}
 					testId={id}

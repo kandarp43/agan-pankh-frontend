@@ -22,8 +22,8 @@ const useTimer = (date, onEnd) => {
 				startDate?.min <= 0 &&
 				startDate?.sec <= 0
 			) {
-				onEnd(startDate)
 				clearInterval(intervalId)
+				onEnd()
 				setTimer(startDate)
 			} else if (startDate) {
 				setTimer(startDate)
