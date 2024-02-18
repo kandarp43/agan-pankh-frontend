@@ -23,7 +23,7 @@ export default function TestsById() {
 		}
 	)
 	return (
-		<div className='my-4 sm:px-4 px-0 mx-1 '>
+		<div className='my-2 mt-4 sm:px-4 px-0 mx-1 '>
 			{isLoading ? (
 				<div className='w-full flex items-center justify-center'>
 					<CircularProgress color='secondary' aria-label='Loading...' />

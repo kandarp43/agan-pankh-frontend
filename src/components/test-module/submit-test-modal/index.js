@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 
 import {
 	Modal,
@@ -22,6 +22,7 @@ export default function SubmitTestModal({
 	const data = {
 		isAnswered: 0,
 		isReviewed: 0,
+		isNotVisited: totalQuestions - selectedAnswers.length,
 	}
 
 	selectedAnswers.forEach((ans) => {
@@ -63,6 +64,16 @@ export default function SubmitTestModal({
 									<div className='flex items-center justify-between'>
 										<span>Questions Answers </span>
 										<span>{data.isAnswered}</span>
+									</div>
+								</CardBody>
+							</Card>
+							<Card
+								className={`leading-5 text-base transition rounded-md flex items-center bg-danger-100 text-danger font-bold`}
+							>
+								<CardBody>
+									<div className='flex items-center justify-between'>
+										<span>Not visited Questions </span>
+										<span>{data.isNotVisited}</span>
 									</div>
 								</CardBody>
 							</Card>

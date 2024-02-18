@@ -101,6 +101,7 @@ export default function QuestionsList({
 	}
 
 	function addRemoveReview(data, isAdd) {
+		console.log(data, isAdd)
 		const isAnswerExist = selectedAnswers.findIndex(
 			(que) => +que?.questionIndex === +data?.questionIndex
 		)
@@ -129,6 +130,7 @@ export default function QuestionsList({
 	}
 
 	function gotoQuestion(data, index) {
+		console.log({ index, data })
 		setCurrentQue(index)
 		const isAnswerExist = selectedAnswers.findIndex(
 			(que) => +que?.questionIndex === +data?.questionIndex
@@ -171,7 +173,7 @@ export default function QuestionsList({
 	} = useDisclosure()
 	return (
 		<div className='flex select-none'>
-			<div className='px-2 w-full'>
+			<div className='px-2 w-full h-fit'>
 				{/* <PremiumCard /> */}
 				<div className='flex sm:flex-row flex-col gap-y-2 sm:items-center justify-between'>
 					<H1>{testData?.testName}</H1>
@@ -300,19 +302,8 @@ export default function QuestionsList({
 						</Button>
 					</div>
 				</div>
-				<div className='w-full hidden h-16 fixed bottom-0 left-0 bg-white p-2 z-50  items-center justify-end'>
-					<Button
-						isLoading={isLoading || isSubmitting}
-						onPress={onSubmitOpen}
-						className='!transition font-bold w-80'
-						variant='ghost'
-						color='warning'
-					>
-						Submit Answers
-					</Button>
-				</div>
 			</div>
-			<div className='col-span-4 sm:block hidden'>
+			<div className='col-span-4 sm:block hidden h-fit'>
 				<TestSidebar
 					selectedAnswers={selectedAnswers}
 					gotoQuestion={gotoQuestion}
