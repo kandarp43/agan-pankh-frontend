@@ -155,42 +155,57 @@ export default function HeroSection() {
 					{(onClose) => (
 						<>
 							<ModalHeader className='flex flex-col gap-1'>
-								Start your Test
+								{selectedTest.current?.isOnGoing
+									? 'Continue your Test'
+									: 'Start your Test'}
 							</ModalHeader>
 							<ModalBody>
 								<div>
-									<p className='font-semibold'>You are about to start:</p>
+									<p className='font-semibold'>
+										{!selectedTest.current?.isOnGoing
+											? 'You are about to start:'
+											: null}
+									</p>
 									<Chip color='warning' variant='flat' radius='sm'>
 										{selectedTest.current?.testName}
 									</Chip>
 								</div>
-								<ul>
-									<li className='leading-5 text-xs	'>
-										By clicking on "Start Test", Your test will be started and
-										you will be redirected to test page.
-									</li>
-									<li className='leading-5 text-xs	'>
-										you will get 60 minutes to complete this test.
-									</li>
-									<li className='leading-5 text-xs	'>
-										After 60 minutes you will not be able to answer any of the
-										questions.
-									</li>
-									<li className='leading-5 text-xs	'>
-										<Checkbox
-											size='sm'
-											isSelected={isConfirm}
-											onValueChange={setConfirm}
-										>
-											I read all terms carefully and I agree to start the Test
-										</Checkbox>
-									</li>
-								</ul>
+								{!selectedTest.current?.isOnGoing ? (
+									<ul>
+										<li className='leading-5 text-xs'>
+											By clicking on "Start Test", Your test will be started and
+											you will be redirected to test page.
+										</li>
+										<li className='leading-5 text-xs'>
+											you will get 60 minutes to complete this test.
+										</li>
+										<li className='leading-5 text-xs'>
+											After 60 minutes you will not be able to answer any of the
+											questions.
+										</li>
+										{!selectedTest.current?.isOnGoing ? (
+											<li className='mt-4'>
+												<Checkbox
+													size='md'
+													color='secondary'
+													isSelected={isConfirm}
+													onValueChange={setConfirm}
+													classNames={{ label: 'leading-3 font-bold text-xs' }}
+												>
+													I read all terms carefully and I agree to start the
+													Test
+												</Checkbox>
+											</li>
+										) : null}
+									</ul>
+								) : null}
 							</ModalBody>
 							<ModalFooter className='pt-1 pb-6'>
 								<Button
 									fullWidth
-									isDisabled={!isConfirm}
+									isDisabled={
+										!selectedTest.current?.isOnGoing ? !isConfirm : false
+									}
 									className='!transition font-bold'
 									variant='ghost'
 									color='secondary'

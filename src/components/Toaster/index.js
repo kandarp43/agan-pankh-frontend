@@ -33,7 +33,7 @@ function Toaster({ limit }) {
 	useQuery('toast', () => setMessages([]), {
 		onSuccess: () => {
 			handleMultiToast({
-				id: new Date().getTime(),
+				id: new Date().getTime() * (Math.random() * 100),
 				message: queryClient.getQueryData('message')?.message,
 				type: queryClient.getQueryData('message')?.type,
 				isOpen: true,

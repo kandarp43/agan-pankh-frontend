@@ -2,13 +2,16 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { H1 } from '../../common/heading'
 import { RadioGroup, Radio } from '@nextui-org/react'
 import { useMutation, useQueryClient } from 'react-query'
-import { Button, Card, Chip, CardBody } from '@nextui-org/react'
+import { Button, Card, Chip, CardBody, useDisclosure } from '@nextui-org/react'
 import { submitTest, submitTestAnswer } from '../../../Query/tests/index.query'
 import { useNavigate } from 'react-router-dom'
 import Timer from '../../TImer'
 import TestSidebar from '../../testSidebar'
 import Image from '../image'
 import testingImage from '../../../assets/images/testingImage.jpeg'
+import SubmitTestModal from '../submit-test-modal'
+import SidebarModal from '../sidebar-modal'
+import { toaster } from '../../../helpers'
 
 const shortTitle = {
 	G: 'Gujarati',
@@ -70,20 +73,20 @@ export default function QuestionsList({
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
 	const handleSubmit = () => {
-		// Do something with the selected answers, e.g., check them against correct answers and show feedback
-		console.log('Selected answers:', selectedAnswers)
 		submitAnswersApi(
 			{ id: testId, data: { answers: selectedAnswers } },
 			{
 				onSuccess: () => {
-					setSelectedAnswers([])
 					navigate('/')
+					setSelectedAnswers([])
+					toaster('Test has been submitted successfully')
 					queryClient.invalidateQueries('getTestList')
+				},
+				onError: () => {
+					toaster('Test has been submitted successfully', '')
 				},
 			}
 		)
-
-		// Reset for next set of questions
 	}
 
 	function selectedOption(questionIndex) {
@@ -159,20 +162,27 @@ export default function QuestionsList({
 		selectedAnswers.findIndex(
 			(ans) => que?.questionIndex === ans?.questionIndex && ans.isReviewed
 		) >= 0
+
+	const { isOpen, onOpen, onOpenChange } = useDisclosure()
+	const {
+		isOpen: isSubmitOpen,
+		onOpen: onSubmitOpen,
+		onOpenChange: onSubmitOpenChange,
+	} = useDisclosure()
 	return (
 		<div className='flex select-none'>
 			<div className='px-2 w-full'>
 				{/* <PremiumCard /> */}
 				<div className='flex sm:flex-row flex-col gap-y-2 sm:items-center justify-between'>
 					<H1>{testData?.testName}</H1>
-					<Timer time={testSession?.endTime} onEnd={() => {}}></Timer>
+					<Timer time={testSession?.endTime} onEnd={handleSubmit}></Timer>
 				</div>
 				<div className='que-main-list my-3 mb-16'>
 					<Card className='p-3 mb-4'>
 						<CardBody className='p-0'>
 							{/* {getTestQue(0)?.map((que, index) => {
 							return ( */}
-							<div className='flex items-center w-full justify-between mb-2 select-none'>
+							<div className='flex flex-col sm:flex-row sm:items-center w-full justify-between mb-2 select-none'>
 								<Chip
 									variant='shadow'
 									color='warning'
@@ -181,19 +191,28 @@ export default function QuestionsList({
 								>
 									{shortTitle[que?.testSections]}
 								</Chip>
-								<Button
-									isLoading={isLoading || isSubmitting}
-									isDisabled={testData?.questions.length - 1 <= currentQue}
-									onPress={() => {
-										addRemoveReview(que, !isReviewed)
-									}}
-									className='!transition font-bold my-2 w-1/2 sm:w-fit'
-									variant={isReviewed ? 'solid' : 'bordered'}
-									size='sm'
-									color='default'
-								>
-									{isReviewed ? 'Remove from Review' : 'Add to Review'}
-								</Button>
+								<div className='flex gap-2'>
+									<Button
+										onPress={() => {
+											addRemoveReview(que, !isReviewed)
+										}}
+										className='!transition font-bold my-2 w-fit'
+										variant={isReviewed ? 'solid' : 'bordered'}
+										size='sm'
+										color='default'
+									>
+										{isReviewed ? 'Remove from Review' : 'Add to Review'}
+									</Button>
+									<Button
+										onPress={onOpen}
+										className='!transition font-bold my-2 w-fit block sm:hidden'
+										variant={'bordered'}
+										size='sm'
+										color='default'
+									>
+										question map
+									</Button>
+								</div>
 							</div>
 							<RadioGroup
 								classNames={{
@@ -226,7 +245,7 @@ export default function QuestionsList({
 											key={option.optionText}
 											value={i}
 											classNames={{ label: 'w-full max-w-full' }}
-											className={`rounded-lg border-2 max-w-[calc(100%_-_10%)] w-full ${
+											className={`rounded-lg transition border-2 max-w-[calc(100%_-_10%)] w-full ${
 												selectedOption(que?.questionIndex) === i
 													? 'border-warning'
 													: ''
@@ -246,7 +265,6 @@ export default function QuestionsList({
 					</Card>
 					<div className='flex items-center gap-x-2 justify-between w-full'>
 						<Button
-							isLoading={isLoading || isSubmitting}
 							isDisabled={currentQue <= 0}
 							onPress={() => {
 								gotoQuestion(getTestQue(currentQue - 1), currentQue - 1)
@@ -258,7 +276,6 @@ export default function QuestionsList({
 							Previous
 						</Button>
 						<Button
-							isLoading={isLoading || isSubmitting}
 							isDisabled={testData?.questions.length - 1 <= currentQue}
 							onPress={() => {
 								gotoQuestion(getTestQue(currentQue + 1), currentQue + 1)
@@ -274,7 +291,7 @@ export default function QuestionsList({
 						<Button
 							fullWidth
 							isLoading={isLoading || isSubmitting}
-							onPress={handleSubmit}
+							onPress={onSubmitOpen}
 							className='!transition font-bold'
 							variant='ghost'
 							color='warning'
@@ -286,7 +303,7 @@ export default function QuestionsList({
 				<div className='w-full hidden h-16 fixed bottom-0 left-0 bg-white p-2 z-50  items-center justify-end'>
 					<Button
 						isLoading={isLoading || isSubmitting}
-						onPress={handleSubmit}
+						onPress={onSubmitOpen}
 						className='!transition font-bold w-80'
 						variant='ghost'
 						color='warning'
@@ -300,10 +317,28 @@ export default function QuestionsList({
 					selectedAnswers={selectedAnswers}
 					gotoQuestion={gotoQuestion}
 					isLoading={isSubmitting}
-					handleSubmit
+					handleSubmit={onSubmitOpen}
 					questions={testData?.questions}
 				/>
 			</div>
+			<SubmitTestModal
+				onOpenChange={onSubmitOpenChange}
+				isOpen={isSubmitOpen}
+				onSubmit={handleSubmit}
+				selectedAnswers={selectedAnswers}
+				timeRemaining={<Timer time={testSession?.endTime} />}
+				totalQuestions={testData?.questions?.length}
+			/>
+
+			<SidebarModal onOpenChange={onOpenChange} isOpen={isOpen}>
+				<TestSidebar
+					closeModal={onOpenChange}
+					selectedAnswers={selectedAnswers}
+					gotoQuestion={gotoQuestion}
+					isLoading={isSubmitting}
+					questions={testData?.questions}
+				/>
+			</SidebarModal>
 		</div>
 	)
 }

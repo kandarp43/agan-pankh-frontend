@@ -4,15 +4,22 @@ import { useQuery } from 'react-query'
 import { testById } from '../../Query/tests/index.query'
 import QuestionsList from '../../components/test-module/questions-list'
 import { CircularProgress } from '@nextui-org/react'
+import { toaster } from '../../helpers'
+import { useNavigate } from 'react-router-dom'
 
 export default function TestsById() {
 	const { id } = useParams()
+	const navigate = useNavigate()
 	const { data, isLoading } = useQuery(
 		['getTestById', id],
 		() => testById(id),
 		{
 			enabled: !!id,
 			select: (d) => d.data,
+			onError: (err) => {
+				toaster(err.response.data.error)
+				navigate('/')
+			},
 		}
 	)
 	return (

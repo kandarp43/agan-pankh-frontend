@@ -28,20 +28,24 @@ export default function TestSidebar({
 	isLoading,
 	handleSubmit,
 	gotoQuestion,
+	closeModal,
 }) {
 	return (
 		<>
-			<div className='flex flex-wrap p-5 items-center content-baseline gap-5 w-80 min-h-[calc(100vh_-150px)] h-[calc(100vh_-150px)] overflow-y-auto'>
+			<div className='flex flex-wrap p-1 sm:p-4 items-center content-baseline gap-3 sm:gap-5 w-72 sm:w-80 min-h-[350px] h-[350px] sm:min-h-[calc(100vh_-150px)] sm:h-[calc(100vh_-150px)] overflow-y-auto'>
 				{questions.map((que, i) => {
 					return (
 						<div
-							className={`transition h-10 w-10 rounded-lg self-center border flex items-center justify-center cursor-pointer ${getStyle(
+							className={`transition h-8 w-8 sm:h-10 sm:w-10 rounded-lg self-center border flex items-center justify-center cursor-pointer ${getStyle(
 								selectedAnswers.find(
 									(selected) => selected.questionIndex === que.questionIndex
 								)
 							)}`}
 							key={i + 1}
-							onClick={() => gotoQuestion(que, i)}
+							onClick={() => {
+								gotoQuestion(que, i)
+								typeof closeModal === 'function' && closeModal()
+							}}
 						>
 							{i + 1}
 						</div>
@@ -53,7 +57,7 @@ export default function TestSidebar({
 					fullWidth
 					isLoading={isLoading}
 					onPress={handleSubmit}
-					className='!transition font-bold'
+					className='!transition font-bold sm:block hidden'
 					variant='ghost'
 					color='warning'
 				>

@@ -94,6 +94,25 @@ export default function GoogleSignin({ ...props }) {
 							<ModalBody>
 								<Controller
 									control={control}
+									name='username'
+									rules={{
+										required: 'This Field is Required',
+										validate: (value) =>
+											value?.trim()?.length > 0 || 'please enter a valid Name',
+									}}
+									render={({ field, fieldState: { error } }) => (
+										<Input
+											label='Full name'
+											type='text'
+											variant='bordered'
+											isInvalid={!!error?.message}
+											errorMessage={error?.message}
+											{...field}
+										/>
+									)}
+								/>
+								<Controller
+									control={control}
 									name='contactNo'
 									rules={{
 										required: 'This Field is Required',
