@@ -222,13 +222,15 @@ export default function QuestionsList({
 								}}
 								className='mb-4'
 								label={
-									<div classN>
+									<div>
 										<p>
 											Q{currentQue + 1}. {que?.questionText}
 										</p>
-										<div className='hidden mt-2 ml-3 object-contain'>
-											<img src={testingImage} />
-										</div>
+										{que?.queImage ? (
+											<div className='hidden mt-2 ml-3 object-contain'>
+												<img src={que?.queImage} alt={que?.questionText} />
+											</div>
+										) : null}
 									</div>
 								}
 								key={que?.questionText}
@@ -254,9 +256,14 @@ export default function QuestionsList({
 											} mb-2 ml-3`}
 										>
 											<p>{option?.optionText}</p>
-											<div className='hidden mt-2 object-contain'>
-												<img src={testingImage} />
-											</div>
+											{option?.optImage ? (
+												<div className='hidden mt-2 object-contain'>
+													<img
+														src={option?.optImage}
+														alt={option?.optionText}
+													/>
+												</div>
+											) : null}
 										</Radio>
 									)
 								})}
