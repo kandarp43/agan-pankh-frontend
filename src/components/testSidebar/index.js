@@ -35,7 +35,7 @@ export default function TestSidebar({
 				{questions.map((que, i) => {
 					return (
 						<div
-							className={`h-10 w-10 rounded-lg self-center border flex items-center justify-center cursor-pointer ${getStyle(
+							className={`transition h-10 w-10 rounded-lg self-center border flex items-center justify-center cursor-pointer ${getStyle(
 								selectedAnswers.find(
 									(selected) => selected.questionIndex === que.questionIndex
 								)

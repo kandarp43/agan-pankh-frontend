@@ -55,7 +55,7 @@ export default function QuestionsList({
 				) {
 					mutate({ id: testId, data })
 				}
-				newSelected[isAnswerExist] = data
+				newSelected[isAnswerExist] = { ...newSelected[isAnswerExist], ...data }
 				return newSelected
 			})
 		} else {
