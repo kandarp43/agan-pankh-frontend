@@ -146,7 +146,7 @@ export default function HeaderBar({ noAuth }) {
 								<p className='text-gray-800'>
 									Get unlimited access to all tests!
 								</p>
-								<H4 className='text-2xl text-warning'>Rs. 499</H4>
+								<H4 className='text-2xl text-warning'>Rs. 49</H4>
 								<p className='text-sm text-gray-800'>One-time payment!</p>
 							</ModalBody>
 							<ModalFooter className='pt-1 pb-6'>
