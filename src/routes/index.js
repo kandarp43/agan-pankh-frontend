@@ -13,7 +13,7 @@ export const routes = [
 				element: <Home />,
 			},
 			{
-				path: 'test/:id',
+				path: ':type/:id',
 				element: <TestsById />,
 			},
 		],
