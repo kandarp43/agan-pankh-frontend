@@ -1,6 +1,15 @@
 import React from 'react'
 import { H1 } from '../../common/heading'
-import { Card, Chip, CardBody, RadioGroup, Radio } from '@nextui-org/react'
+import {
+	Divider,
+	Card,
+	Chip,
+	CardBody,
+	RadioGroup,
+	Radio,
+	Button,
+} from '@nextui-org/react'
+import { useNavigate } from 'react-router-dom'
 
 const shortTitle = {
 	G: 'Gujarati',
@@ -9,11 +18,22 @@ const shortTitle = {
 	R: 'Reasoning',
 }
 
-export default function ResultList({ testData, questions }) {
+export default function ResultList({ testName, questions }) {
+	const navigate = useNavigate()
 	return (
 		<div className='px-2 w-full h-fit'>
-			<div className='flex sm:flex-row flex-col gap-y-2 sm:items-center justify-between'>
-				<H1>{testData?.testName}</H1>
+			<Button
+				className='!transition font-bold mb-4'
+				color='secondary'
+				variant='flat'
+				onPress={() => {
+					navigate('/')
+				}}
+			>
+				Goto home
+			</Button>
+			<div className='flex sm:flex-row flex-col mb-3 sm:items-center justify-between'>
+				<H1>{testName}</H1>
 			</div>
 			<Card className='p-3 mb-4'>
 				<CardBody className='p-0'>
@@ -34,7 +54,7 @@ export default function ResultList({ testData, questions }) {
 									classNames={{
 										label: 'font-bold text-black select-none w-full mb-3',
 									}}
-									className='mb-4'
+									className='mb-2'
 									label={
 										<div>
 											<p>
@@ -49,17 +69,32 @@ export default function ResultList({ testData, questions }) {
 									}
 									key={que?.questionText}
 									color='warning'
-									value={null}
+									value={que?.selectedOptionIndex}
 								>
 									{que?.options.map((option, i) => {
 										return (
 											<Radio
-												key={option.optionText}
+												key={option?.optionText}
 												value={i}
 												classNames={{ label: 'w-full max-w-full' }}
-												className={`rounded-lg transition border-2 max-w-[calc(100%_-_10%)] w-full ${
-													'selected' ? 'border-warning' : ''
-												} mb-2 ml-3`}
+												className={`rounded-lg transition border-2 max-w-[calc(100%_-_6%)] w-full ${
+													que?.selectedOptionIndex === i && !option.isCorrect
+														? 'border-danger'
+														: que?.selectedOptionIndex === i && option.isCorrect
+														? 'border-success'
+														: option.isCorrect
+														? 'border-success'
+														: ''
+												} mb-2 ml-2`}
+												color={
+													que?.selectedOptionIndex === i && !option.isCorrect
+														? 'danger'
+														: que?.selectedOptionIndex === i && option.isCorrect
+														? 'success'
+														: option.isCorrect
+														? 'success'
+														: 'default'
+												}
 											>
 												<p>{option?.optionText}</p>
 												{option?.optImage ? (
@@ -74,6 +109,7 @@ export default function ResultList({ testData, questions }) {
 										)
 									})}
 								</RadioGroup>
+								<Divider className='mb-4' />
 							</>
 						)
 					})}

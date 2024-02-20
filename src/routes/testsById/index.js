@@ -60,7 +60,12 @@ export default function TestsById() {
 						isLoading={isLoading}
 					/>
 				) : null}
-				{resultData?.data && isResult && <ResultList />}
+				{resultData?.testName && isResult && (
+					<ResultList
+						questions={resultData.questions}
+						testName={resultData?.testName}
+					/>
+				)}
 			</div>
 		</>
 	)

@@ -36,10 +36,9 @@ export default function HeroSection() {
 	const { mutate: startTestApi } = useMutation(startTest)
 
 	function onTestClick(test) {
-		// if (test?.testGiven && test?._id) {
-		// 	navigate(`/result/${test?._id}`)
-		// } else
-		if (userData && !userData?.hasPreminum) {
+		if (test?.testGiven && test?._id) {
+			navigate(`/result/${test?._id}`)
+		} else if (userData && !userData?.hasPreminum) {
 			emitEvent('buyPlan')
 		} else if (test?.isLocked && !test?.testGiven) {
 			toaster(
