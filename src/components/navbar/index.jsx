@@ -116,7 +116,7 @@ export default function HeaderBar({ noAuth }) {
 					) : null}
 				</div>
 			</Navbar>
-			{!noAuth && data && 'hasPreminum' in data && !data?.hasPreminum ? (
+			{/* {!noAuth && data && 'hasPreminum' in data && !data?.hasPreminum ? (
 				<div
 					className='w-full sm:p-1 p-2 bg-yellow-500 px-6 cursor-default'
 					onClick={onOpen}
@@ -131,7 +131,7 @@ export default function HeaderBar({ noAuth }) {
 						</span>
 					</div>
 				</div>
-			) : null}
+			) : null} */}
 			<Modal
 				isOpen={isOpen}
 				size='sm'

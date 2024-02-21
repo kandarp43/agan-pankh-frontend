@@ -48,7 +48,7 @@ export default function SubmitTestModal({
 								</CardBody>
 							</Card>
 							<Card
-								className={`leading-5 text-base transition rounded-md flex items-center bg-warning-100 text-warning font-bold`}
+								className={`leading-5 text-base transition rounded-md flex items-center bg-success-100 text-success font-bold`}
 							>
 								<CardBody>
 									<div className='flex items-center justify-between'>
@@ -58,17 +58,17 @@ export default function SubmitTestModal({
 								</CardBody>
 							</Card>
 							<Card
-								className={`leading-5 text-base transition rounded-md flex items-center bg-success-100 text-success font-bold`}
+								className={`leading-5 text-base transition rounded-md flex items-center bg-warning-100 text-warning font-bold`}
 							>
 								<CardBody>
 									<div className='flex items-center justify-between'>
-										<span>Questions Answers </span>
+										<span>Questions Answered </span>
 										<span>{data.isAnswered}</span>
 									</div>
 								</CardBody>
 							</Card>
 							<Card
-								className={`leading-5 text-base transition rounded-md flex items-center bg-danger-100 text-danger font-bold`}
+								className={`leading-5 text-base transition rounded-md flex items-center bg-gray-200 text-gray font-bold`}
 							>
 								<CardBody>
 									<div className='flex items-center justify-between'>

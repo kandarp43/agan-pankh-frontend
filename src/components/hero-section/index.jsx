@@ -70,8 +70,28 @@ export default function HeroSection() {
 		select: (d) => d?.data?.data?.data,
 	})
 	return (
-		<div className='py-4'>
+		<div className='py-4 select-none'>
 			<H3 className='my-3'>CCE TEST</H3>
+			<Card
+				className={`my-3 leading-5 text-base  border-2 border-warning-400 transition rounded-md flex items-center cursor-pointer`}
+			>
+				<CardBody
+					className='overflow-visible bg-warning-500 hover:bg-warning-400 text-white transition delay-75'
+					onClick={() => emitEvent('buyPlan')}
+				>
+					<li className={`flex items-center cursor-pointer`}>
+						<div className='pe-2 flex flex-col sm:items-center sm:flex-row justify-between w-full font-semibold'>
+							<span>
+								Currently you haven't joined our premium plan, you can start
+								giving Tests right after you subscribe to premium plan.
+								<span className='cursor-pointer ml-2 text-xs py-0.5 px-2 rounded-md border border-white text-center'>
+									Buy premium
+								</span>
+							</span>
+						</div>
+					</li>
+				</CardBody>
+			</Card>
 			{isLoading ? (
 				<div className='w-full flex items-center justify-center'>
 					<CircularProgress color='secondary' aria-label='Loading...' />
@@ -83,7 +103,9 @@ export default function HeroSection() {
 						<Card
 							key={test?._id}
 							className={`my-3 leading-5 text-base ${
-								test?.isLocked
+								test?.testGiven && test?._id
+									? 'bg-warning/10  ring-warning-500'
+									: test?.isLocked
 									? 'hover:bg-danger/10 hover:ring-danger-500'
 									: 'hover:bg-success/10 hover:ring-success-500'
 							} transition rounded-md flex items-center cursor-pointer hover:ring-1`}
@@ -95,7 +117,13 @@ export default function HeroSection() {
 								<li className={`flex items-center cursor-pointer`}>
 									<span className='pe-2'>
 										{test?.isLocked ? (
-											<IconWrapper className='bg-danger/10 text-danger'>
+											<IconWrapper
+												className={
+													test?.testGiven && test?._id
+														? 'bg-warning/20 text-warning'
+														: 'bg-danger/10 text-danger'
+												}
+											>
 												<LockIcon className='text-lg' />
 											</IconWrapper>
 										) : (
@@ -107,6 +135,16 @@ export default function HeroSection() {
 									<div className='pe-2 flex flex-col sm:items-center sm:flex-row justify-between w-full font-semibold'>
 										<span>{test?.testName}</span>
 										<div className='text-xs flex flex-col sm:flex-row sm:items-center gap-2'>
+											{test?.testGiven ? (
+												<Chip
+													color='warning'
+													variant='bordered'
+													size='sm'
+													classNames={{ content: 'text-sm' }}
+												>
+													Review your answers
+												</Chip>
+											) : null}
 											{test?.testGiven ? (
 												<Chip
 													color='success'

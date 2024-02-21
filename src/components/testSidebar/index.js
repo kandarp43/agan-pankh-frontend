@@ -2,8 +2,8 @@ import React, { useMemo, useRef } from 'react'
 import { Button } from '@nextui-org/react'
 
 const colors = {
-	isVisited: 'bg-danger-500 text-white border-danger-500',
-	isAnswered: 'bg-success-500 text-white border-success-500',
+	isVisited: 'bg-gray-500 text-white border-gray-500',
+	isAnswered: 'bg-warning-500 text-white border-warning-500',
 	isNotVisited: 'bg-transparent text-warning border-warning',
 	isReviewed: 'bg-primary text-white border-primary',
 }
