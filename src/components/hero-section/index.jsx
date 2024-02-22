@@ -72,7 +72,7 @@ export default function HeroSection() {
 	return (
 		<div className='py-4 select-none'>
 			<H3 className='my-3'>CCE TEST</H3>
-			<Card
+			{userData && !userData?.hasPreminum ? <Card
 				className={`my-3 leading-5 text-base  border-2 border-warning-400 transition rounded-md flex items-center cursor-pointer`}
 			>
 				<CardBody
@@ -91,7 +91,7 @@ export default function HeroSection() {
 						</div>
 					</li>
 				</CardBody>
-			</Card>
+			</Card> : null}
 			{isLoading ? (
 				<div className='w-full flex items-center justify-center'>
 					<CircularProgress color='secondary' aria-label='Loading...' />
