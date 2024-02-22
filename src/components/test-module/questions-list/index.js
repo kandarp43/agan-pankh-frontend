@@ -113,7 +113,7 @@ export default function QuestionsList({
 
 				mutate({
 					id: testId,
-					data: reqData,
+					data: { ...reqData, isReviewed: true },
 				})
 
 				newSelected[isAnswerExist] = reqData
@@ -121,7 +121,7 @@ export default function QuestionsList({
 			})
 		} else {
 			const reqData = { ...data, isReviewed: isAdd }
-			mutate({ id: testId, data: reqData })
+			mutate({ id: testId, data: { ...reqData, isReviewed: true } })
 			setSelectedAnswers([...selectedAnswers, reqData])
 		}
 		// call isReviewed
@@ -247,11 +247,10 @@ export default function QuestionsList({
 											key={option.optionText}
 											value={i}
 											classNames={{ label: 'w-full max-w-full' }}
-											className={`rounded-lg transition border-2 max-w-[calc(100%_-_10%)] w-full ${
-												selectedOption(que?.questionIndex) === i
+											className={`rounded-lg transition border-2 max-w-[calc(100%_-_10%)] w-full ${selectedOption(que?.questionIndex) === i
 													? 'border-warning'
 													: ''
-											} mb-2 ml-3`}
+												} mb-2 ml-3`}
 										>
 											<p>{option?.optionText}</p>
 											{option?.optImage ? (
