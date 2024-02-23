@@ -229,6 +229,11 @@ export default function QuestionsList({
 												<img src={que?.queImage} alt={que?.questionText} />
 											</div>
 										) : null}
+										{que?.specialImage ? (
+												<div className='mt-2 ml-3 object-contain'>
+													<img src={que?.specialImage} alt={que?.questionText} />
+												</div>
+										) : null}
 									</div>
 								}
 								key={que?.questionText}
@@ -254,7 +259,7 @@ export default function QuestionsList({
 										>
 											<p>{option?.optionText}</p>
 											{option?.optImage ? (
-												<div className='hidden mt-2 object-contain'>
+												<div className='mt-2 object-contain'>
 													<img
 														src={option?.optImage}
 														alt={option?.optionText}
