@@ -61,7 +61,7 @@ export default function ResultList({ testName, questions }) {
 												Q{index + 1}. {que?.questionText}
 											</p>
 											{que?.queImage ? (
-												<div className='hidden mt-2 ml-3 object-contain'>
+												<div className='mt-2 ml-3 object-contain'>
 													<img src={que?.queImage} alt={que?.questionText} />
 												</div>
 											) : null}
