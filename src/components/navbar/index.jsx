@@ -19,7 +19,7 @@ import {
 import { getUser } from '../../Query/auth/index.query'
 import { useMutation, useQuery } from 'react-query'
 import { H3, H4 } from '../common/heading'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { removeToken } from '../../helpers'
 import { applyPromocode, createPayment } from '../../Query/payment/index.query'
 import UpdateUserModal from '../updateUserModal'
@@ -91,15 +91,15 @@ export default function HeaderBar({ noAuth }) {
 		<>
 			<Navbar isBordered maxWidth='full'>
 				<div className='container mx-auto flex items-center justify-between'>
-					<NavbarBrand className='cursor-pointer'>
+					<NavbarBrand>
 						<img
 							src={logo}
 							alt='logo'
-							className='h-12'
+							className='h-12 cursor-pointer'
 							onClick={() => navigate('/')}
 						/>
 						<p
-							className='pl-2 font-bold text-inherit'
+							className='pl-2 font-bold text-xs sm:text-base text-inherit cursor-pointer'
 							onClick={() => navigate('/')}
 						>
 							AganPankh
@@ -126,6 +126,12 @@ export default function HeaderBar({ noAuth }) {
 
 					{!noAuth ? (
 						<NavbarContent as='div' justify='end'>
+							<Link
+								className='ml-3 font-bold text-xs sm:text-base text-inherit cursor-pointer'
+								to='/about-us'
+							>
+								about us
+							</Link>
 							<Dropdown placement='bottom-end'>
 								<DropdownTrigger>
 									<Avatar

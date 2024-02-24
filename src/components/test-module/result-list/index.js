@@ -38,6 +38,7 @@ export default function ResultList({ testName, questions }) {
 			<Card className='p-3 mb-4'>
 				<CardBody className='p-0'>
 					{questions?.map((que, index) => {
+						let isAnsCorrect
 						return (
 							<>
 								<div className='flex flex-col sm:flex-row sm:items-center w-full justify-between mb-2 select-none'>
@@ -54,7 +55,7 @@ export default function ResultList({ testName, questions }) {
 									classNames={{
 										label: 'font-bold text-black select-none w-full mb-3',
 									}}
-									className='mb-2'
+									className=''
 									label={
 										<div>
 											<p className='flex'>
@@ -87,6 +88,10 @@ export default function ResultList({ testName, questions }) {
 									value={que?.selectedOptionIndex}
 								>
 									{que?.options.map((option, i) => {
+										if (!isAnsCorrect) {
+											isAnsCorrect =
+												que?.selectedOptionIndex === i && option.isCorrect
+										}
 										return (
 											<Radio
 												key={option?.optionText}
@@ -135,6 +140,15 @@ export default function ResultList({ testName, questions }) {
 										)
 									})}
 								</RadioGroup>
+								<Chip
+									variant='flat'
+									color={isAnsCorrect ? 'success' : 'danger'}
+									className='mb-3 ml-3'
+									classNames={{ content: 'font-bold' }}
+									size='sm'
+								>
+									{isAnsCorrect ? 'correct' : 'incorrect'}
+								</Chip>
 								<Divider className='mb-4' />
 							</>
 						)
