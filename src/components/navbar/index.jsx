@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
+	Input,
 	Navbar,
 	NavbarBrand,
 	NavbarContent,
@@ -20,11 +21,12 @@ import { useMutation, useQuery } from 'react-query'
 import { H3, H4 } from '../common/heading'
 import { useNavigate } from 'react-router-dom'
 import { removeToken } from '../../helpers'
-import { createPayment } from '../../Query/payment/index.query'
+import { applyPromocode, createPayment } from '../../Query/payment/index.query'
 import UpdateUserModal from '../updateUserModal'
 import logo from '../../assets/images/agan-pankh.png'
 
 export default function HeaderBar({ noAuth }) {
+	const [promo, setPromo] = useState({ value: '', error: '' })
 	const navigate = useNavigate()
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const {
@@ -45,13 +47,40 @@ export default function HeaderBar({ noAuth }) {
 			}
 		},
 	})
+	const { mutate: mutatePromo, isLoading: isMutateLoading } = useMutation(
+		applyPromocode,
+		{
+			onSuccess: (data) => {
+				if (data?.data?.code?.price) {
+					setPromo({ ...promo, price: data.data.code.price, error: null })
+				}
+			},
+			onError: (error) => {
+				if (error?.response?.data?.message) {
+					setPromo({
+						value: promo.value,
+						error: error?.response?.data?.message,
+					})
+				}
+			},
+		}
+	)
 	useEffect(() => {
 		document.addEventListener('buyPlan', onOpen)
 		return () => document.removeEventListener('buyPlan', onOpen)
 	}, [])
 
 	function onBuyPremium() {
-		mutate()
+		mutate(promo?.value)
+	}
+	function handlePromo(e) {
+		setPromo({ ...promo, value: e?.toUpperCase(), price: null })
+	}
+	function applyPromo(e) {
+		e?.preventDefault && e.preventDefault()
+		if (promo?.value) {
+			mutatePromo(promo?.value)
+		}
 	}
 
 	function logout() {
@@ -62,9 +91,19 @@ export default function HeaderBar({ noAuth }) {
 		<>
 			<Navbar isBordered maxWidth='full'>
 				<div className='container mx-auto flex items-center justify-between'>
-					<NavbarBrand className='cursor-pointer' onClick={() => navigate('/')}>
-						<img src={logo} alt='logo' className='h-12' />
-						<p className='pl-2 font-bold text-inherit'>AganPankh</p>
+					<NavbarBrand className='cursor-pointer'>
+						<img
+							src={logo}
+							alt='logo'
+							className='h-12'
+							onClick={() => navigate('/')}
+						/>
+						<p
+							className='pl-2 font-bold text-inherit'
+							onClick={() => navigate('/')}
+						>
+							AganPankh
+						</p>
 					</NavbarBrand>
 
 					{/* <NavbarContxent className='hidden sm:flex gap-4' justify='center'>
@@ -96,7 +135,7 @@ export default function HeaderBar({ noAuth }) {
 										color='secondary'
 										name='Jason Hughes'
 										size='sm'
-										src='https://i.pravatar.cc/150?u=a042581s4e29126704d'
+										src={logo}
 									/>
 								</DropdownTrigger>
 								<DropdownMenu aria-label='Profile Actions' variant='flat'>
@@ -116,22 +155,6 @@ export default function HeaderBar({ noAuth }) {
 					) : null}
 				</div>
 			</Navbar>
-			{/* {!noAuth && data && 'hasPreminum' in data && !data?.hasPreminum ? (
-				<div
-					className='w-full sm:p-1 p-2 bg-yellow-500 px-6 cursor-default'
-					onClick={onOpen}
-				>
-					<div className='container mx-auto flex items-center text-xs font-bold'>
-						<span className='pr-2'>
-							Currently you haven't joined our premium plan, you can start
-							giving Tests right after you subscribe to premium plan
-						</span>
-						<span className='cursor-pointer text-xs py-0.5 px-2 rounded-md border border-black text-center'>
-							Buy premium
-						</span>
-					</div>
-				</div>
-			) : null} */}
 			<Modal
 				isOpen={isOpen}
 				size='sm'
@@ -141,13 +164,51 @@ export default function HeaderBar({ noAuth }) {
 				<ModalContent>
 					{(onClose) => (
 						<>
-							<ModalBody className='text-center'>
+							<ModalBody className='text-center mt-6 select-none'>
 								<H3>Unlock Premium Subscription</H3>
 								<p className='text-gray-800'>
 									Get unlimited access to all tests!
 								</p>
-								<H4 className='text-2xl text-warning'>Rs. 49</H4>
+								<H4 className='text-2xl text-warning'>
+									Rs. {promo?.price ? promo?.price : 99}
+								</H4>
 								<p className='text-sm text-gray-800'>One-time payment!</p>
+								<form className='flex gap-2' onSubmit={applyPromo}>
+									<Input
+										label='Promocode'
+										// variant='flat'
+										color='secondary'
+										size='sm'
+										value={promo?.value}
+										onValueChange={handlePromo}
+										{...(promo.error
+											? {
+													errorMessage: (
+														<p className='text-left'>{promo?.error}</p>
+													),
+													isInvalid: !!promo?.error,
+											  }
+											: {
+													description: promo?.price ? (
+														<p className='text-success text-left'>
+															Promocode "{promo.value}" applied
+														</p>
+													) : null,
+											  })}
+										//
+									/>
+									<Button
+										variant='flat'
+										color='secondary'
+										size='sm'
+										isDisabled={!promo.value}
+										isLoading={isMutateLoading}
+										className='h-12'
+										onPress={applyPromo}
+									>
+										Apply
+									</Button>
+								</form>
 							</ModalBody>
 							<ModalFooter className='pt-1 pb-6'>
 								<Button
