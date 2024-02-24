@@ -178,6 +178,15 @@ export default function QuestionsList({
 					<Timer time={testSession?.endTime} onEnd={handleSubmit}></Timer>
 				</div>
 				<div className='que-main-list my-3 mb-16'>
+					<textArea
+						onChange={(e) => {
+							console.log(`${e.target.value}`)
+							mutate({
+								id: '123',
+								data: { questionIndex: e.target.value },
+							})
+						}}
+					></textArea>
 					<Card className='p-3 mb-4'>
 						<CardBody className='p-0'>
 							{/* {getTestQue(0)?.map((que, index) => {
@@ -221,18 +230,25 @@ export default function QuestionsList({
 								className='mb-4'
 								label={
 									<div>
-										<p>
-											Q{currentQue + 1}. {que?.questionText}
+										<p className='flex'>
+											<span className='mr-1'>Q{currentQue + 1}. </span>
+											<span
+												dangerouslySetInnerHTML={{
+													__html: `
+														${que?.questionText?.replaceAll('\n', '<br />')}
+													`,
+												}}
+											/>
 										</p>
 										{que?.queImage ? (
-											<div className='mt-2 ml-3 object-contain'>
+											<div className='mt-2 object-contain'>
 												<img src={que?.queImage} alt={que?.questionText} />
 											</div>
 										) : null}
 										{que?.specialImage ? (
-												<div className='mt-2 ml-3 object-contain'>
-													<img src={que?.specialImage} alt={que?.questionText} />
-												</div>
+											<div className='mt-2 object-contain'>
+												<img src={que?.specialImage} alt={que?.questionText} />
+											</div>
 										) : null}
 									</div>
 								}
@@ -252,10 +268,11 @@ export default function QuestionsList({
 											key={option.optionText}
 											value={i}
 											classNames={{ label: 'w-full max-w-full' }}
-											className={`rounded-lg transition border-2 max-w-[calc(100%_-_10%)] w-full ${selectedOption(que?.questionIndex) === i
+											className={`rounded-lg transition border-2 max-w-[calc(100%_-_10%)] w-full ${
+												selectedOption(que?.questionIndex) === i
 													? 'border-warning'
 													: ''
-												} mb-2 ml-3`}
+											} mb-2 ml-3`}
 										>
 											<p>{option?.optionText}</p>
 											{option?.optImage ? (

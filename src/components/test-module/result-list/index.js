@@ -57,17 +57,27 @@ export default function ResultList({ testName, questions }) {
 									className='mb-2'
 									label={
 										<div>
-											<p>
-												Q{index + 1}. {que?.questionText}
+											<p className='flex'>
+												<span className='mr-1'>Q{index + 1}. </span>
+												<span
+													dangerouslySetInnerHTML={{
+														__html: `
+														${que?.questionText?.replaceAll('\n', '<br />')}
+													`,
+													}}
+												/>
 											</p>
 											{que?.queImage ? (
-												<div className='mt-2 ml-3 object-contain'>
+												<div className='mt-2 object-contain'>
 													<img src={que?.queImage} alt={que?.questionText} />
 												</div>
 											) : null}
 											{que?.specialImage ? (
-												<div className='mt-2 ml-3 object-contain'>
-													<img src={que?.specialImage} alt={que?.questionText} />
+												<div className='mt-2 object-contain'>
+													<img
+														src={que?.specialImage}
+														alt={que?.questionText}
+													/>
 												</div>
 											) : null}
 										</div>
@@ -81,14 +91,25 @@ export default function ResultList({ testName, questions }) {
 											<Radio
 												key={option?.optionText}
 												value={i}
-												classNames={{ label: 'w-full max-w-full' }}
-												className={`rounded-lg transition border-2 max-w-[calc(100%_-_6%)] w-full ${
+												classNames={{
+													label: 'w-full max-w-full',
+													wrapper:
+														que?.selectedOptionIndex === i && !option.isCorrect
+															? 'border-danger'
+															: que?.selectedOptionIndex === i &&
+															  option.isCorrect
+															? 'border-success'
+															: option.isCorrect
+															? 'border-success'
+															: '',
+												}}
+												className={`rounded-lg transition border-2 max-w-[calc(100%_-_6%)] w-full font-semibold ${
 													que?.selectedOptionIndex === i && !option.isCorrect
-														? 'border-danger'
+														? 'border-danger bg-danger-300'
 														: que?.selectedOptionIndex === i && option.isCorrect
-														? 'border-success'
+														? 'border-success bg-success-300'
 														: option.isCorrect
-														? 'border-success'
+														? 'border-success bg-success-300'
 														: ''
 												} mb-2 ml-2`}
 												color={
