@@ -130,7 +130,7 @@ export default function HeaderBar({ noAuth }) {
 								className='ml-3 font-bold text-xs sm:text-base text-inherit cursor-pointer'
 								to='/about-us'
 							>
-								about us
+								About Us
 							</Link>
 							<Dropdown placement='bottom-end'>
 								<DropdownTrigger>

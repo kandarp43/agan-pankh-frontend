@@ -114,7 +114,7 @@ export default function ResultList({ testName, questions }) {
 														: que?.selectedOptionIndex === i && option.isCorrect
 														? 'border-success bg-success-300'
 														: option.isCorrect
-														? 'border-success bg-success-300'
+														? 'border-success'
 														: ''
 												} mb-2 ml-2`}
 												color={
