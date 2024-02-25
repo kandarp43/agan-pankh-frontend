@@ -69,7 +69,7 @@ export default function AboutUs() {
 						<p className='text-sm leading-4'>
 							For further details write on
 							<a
-								className='block transition underline underline-offset-2 text-warning-500 hover:text-warning-400 font-bold'
+								className='text-base block transition underline underline-offset-2 text-warning-500 hover:text-warning-400 font-bold'
 								href='mailto:hirenjogi.82@gmail.com'
 							>
 								hirenjogi.82@gmail.com
@@ -79,19 +79,19 @@ export default function AboutUs() {
 				</div>
 			</div>
 			<div className='py-3 bg-stone-900 text-white'>
-				<div className='mx-auto max-w-[800px] px-3 flex sm:flex-row flex-col text-sm'>
-					<p className='mr-2'>Developed by </p>
+				<div className='mx-auto max-w-[800px] px-3 flex flex-wrap text-sm'>
+					<p className='mr-1'>Developed by </p>
 					<a
-						className='text-warning underline hover:no-underline underline-offset-4 font-bold'
+						className='!text-sm text-warning underline hover:no-underline underline-offset-4 font-bold'
 						href='https://www.linkedin.com/in/shrey-banugaria/'
 						rel='noreferrer'
 						target='_blank'
 					>
 						Shrey Banugaria
 					</a>
-					<p className='px-2'>and</p>
+					<p className='mx-1'>and</p>
 					<a
-						className='text-warning underline hover:no-underline underline-offset-4 font-bold'
+						className='!text-sm text-warning underline hover:no-underline underline-offset-4 font-bold'
 						href='https://www.linkedin.com/in/kandarp43/'
 						rel='noreferrer'
 						target='_blank'
