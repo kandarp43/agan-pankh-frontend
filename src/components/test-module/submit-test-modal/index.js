@@ -18,6 +18,7 @@ export default function SubmitTestModal({
 	selectedAnswers,
 	totalQuestions,
 	timeRemaining,
+	isLoading
 }) {
 	const data = {
 		isAnswered: 0,
@@ -94,6 +95,7 @@ export default function SubmitTestModal({
 								className='!transition font-bold'
 								variant='ghost'
 								color='secondary'
+								isLoading={isLoading}
 								onClick={onSubmit}
 							>
 								Submit Test

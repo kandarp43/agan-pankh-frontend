@@ -342,6 +342,7 @@ export default function QuestionsList({
 				onOpenChange={onSubmitOpenChange}
 				isOpen={isSubmitOpen}
 				onSubmit={handleSubmit}
+				isLoading={isSubmitting}
 				selectedAnswers={selectedAnswers}
 				timeRemaining={<Timer time={testSession?.endTime} />}
 				totalQuestions={testData?.questions?.length}
