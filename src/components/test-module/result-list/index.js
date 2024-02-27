@@ -89,7 +89,7 @@ export default function ResultList({ testName, questions }) {
 								>
 									{que?.options.map((option, i) => {
 										if (!isAnsCorrect) {
-											isAnsCorrect = que?.selectedOptionIndex >= 0 ? que?.selectedOptionIndex === i && option.isCorrect :'Not Attempted'
+											isAnsCorrect = que?.selectedOptionIndex >= 0 ? (que?.selectedOptionIndex === i && option.isCorrect) :'Not Attempted'
 										}
 										return (
 											<Radio
