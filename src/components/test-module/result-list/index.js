@@ -89,8 +89,7 @@ export default function ResultList({ testName, questions }) {
 								>
 									{que?.options.map((option, i) => {
 										if (!isAnsCorrect) {
-											isAnsCorrect =
-												que?.selectedOptionIndex === i && option.isCorrect
+											isAnsCorrect = que?.selectedOptionIndex >= 0 ? que?.selectedOptionIndex === i && option.isCorrect :'Not Attempted'
 										}
 										return (
 											<Radio
@@ -147,7 +146,7 @@ export default function ResultList({ testName, questions }) {
 									classNames={{ content: 'font-bold' }}
 									size='sm'
 								>
-									{isAnsCorrect ? 'correct' : 'incorrect'}
+									{isAnsCorrect === 'Not Attempted' ? isAnsCorrect : (isAnsCorrect ? 'correct' : 'incorrect')}
 								</Chip>
 								<Divider className='mb-4' />
 							</>
