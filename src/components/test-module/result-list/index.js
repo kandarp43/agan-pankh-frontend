@@ -141,7 +141,7 @@ export default function ResultList({ testName, questions }) {
 								</RadioGroup>
 								<Chip
 									variant='flat'
-									color={isAnsCorrect ? 'success' : 'danger'}
+									color={isAnsCorrect === 'Not Attempted' ? 'danger' : isAnsCorrect ? 'success' : 'danger'}
 									className='mb-3 ml-3'
 									classNames={{ content: 'font-bold' }}
 									size='sm'
