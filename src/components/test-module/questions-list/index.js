@@ -219,7 +219,7 @@ export default function QuestionsList({
 										size='sm'
 										color='default'
 									>
-										question map
+										Question map
 									</Button>
 								</div>
 							</div>
