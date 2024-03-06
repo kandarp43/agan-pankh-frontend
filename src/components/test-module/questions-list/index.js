@@ -99,7 +99,6 @@ export default function QuestionsList({
 	}
 
 	function addRemoveReview(data, isAdd) {
-		console.log(data, isAdd)
 		const isAnswerExist = selectedAnswers.findIndex(
 			(que) => +que?.questionIndex === +data?.questionIndex
 		)
@@ -128,7 +127,6 @@ export default function QuestionsList({
 	}
 
 	function gotoQuestion(data, index) {
-		console.log({ index, data })
 		setCurrentQue(index)
 		const isAnswerExist = selectedAnswers.findIndex(
 			(que) => +que?.questionIndex === +data?.questionIndex
@@ -169,6 +167,15 @@ export default function QuestionsList({
 		onOpen: onSubmitOpen,
 		onOpenChange: onSubmitOpenChange,
 	} = useDisclosure()
+	let queString = ''
+	try {
+		queString = que?.questionText
+			? que?.questionText?.replaceAll('\n', '<br>')
+			: ''
+	} catch (error) {
+		queString = que?.questionText
+	}
+
 	return (
 		<div className='flex select-none'>
 			<div className='px-2 w-full h-fit'>
@@ -177,16 +184,7 @@ export default function QuestionsList({
 					<H1>{testData?.testName}</H1>
 					<Timer time={testSession?.endTime} onEnd={handleSubmit}></Timer>
 				</div>
-				<div className='que-main-list my-3 mb-16'>
-					<textArea
-						onChange={(e) => {
-							console.log(`${e.target.value}`)
-							mutate({
-								id: '123',
-								data: { questionIndex: e.target.value },
-							})
-						}}
-					></textArea>
+				<div className='que-main-list my-3 mb-16' key={currentQue + 1}>
 					<Card className='p-3 mb-4'>
 						<CardBody className='p-0'>
 							{/* {getTestQue(0)?.map((que, index) => {
@@ -234,9 +232,7 @@ export default function QuestionsList({
 											<span className='mr-1'>Q{currentQue + 1}. </span>
 											<span
 												dangerouslySetInnerHTML={{
-													__html: `
-														${que?.questionText?.replaceAll('\n', '<br />')}
-													`,
+													__html: queString,
 												}}
 											/>
 										</p>

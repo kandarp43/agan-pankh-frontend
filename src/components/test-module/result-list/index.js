@@ -39,6 +39,16 @@ export default function ResultList({ testName, questions }) {
 				<CardBody className='p-0'>
 					{questions?.map((que, index) => {
 						let isAnsCorrect
+
+						let queString = ''
+						try {
+							queString = que?.questionText
+								? que?.questionText?.replaceAll('\n', '<br>')
+								: ''
+						} catch (error) {
+							queString = que?.questionText
+						}
+
 						return (
 							<>
 								<div className='flex flex-col sm:flex-row sm:items-center w-full justify-between mb-2 select-none'>
@@ -62,9 +72,7 @@ export default function ResultList({ testName, questions }) {
 												<span className='mr-1'>Q{index + 1}. </span>
 												<span
 													dangerouslySetInnerHTML={{
-														__html: `
-														${que?.questionText?.replaceAll('\n', '<br />')}
-													`,
+														__html: queString,
 													}}
 												/>
 											</p>
@@ -89,7 +97,11 @@ export default function ResultList({ testName, questions }) {
 								>
 									{que?.options.map((option, i) => {
 										if (!isAnsCorrect) {
-											isAnsCorrect = (que?.selectedOptionIndex !== null && que?.selectedOptionIndex >= 0) ? que?.selectedOptionIndex === i && option.isCorrect :'Not Attempted'
+											isAnsCorrect =
+												que?.selectedOptionIndex !== null &&
+												que?.selectedOptionIndex >= 0
+													? que?.selectedOptionIndex === i && option.isCorrect
+													: 'Not Attempted'
 										}
 										return (
 											<Radio
@@ -141,12 +153,22 @@ export default function ResultList({ testName, questions }) {
 								</RadioGroup>
 								<Chip
 									variant='flat'
-									color={isAnsCorrect === 'Not Attempted' ? 'danger' : isAnsCorrect ? 'success' : 'danger'}
+									color={
+										isAnsCorrect === 'Not Attempted'
+											? 'danger'
+											: isAnsCorrect
+											? 'success'
+											: 'danger'
+									}
 									className='mb-3 ml-3'
 									classNames={{ content: 'font-bold' }}
 									size='sm'
 								>
-									{isAnsCorrect === 'Not Attempted' ? isAnsCorrect : (isAnsCorrect ? 'correct' : 'incorrect')}
+									{isAnsCorrect === 'Not Attempted'
+										? isAnsCorrect
+										: isAnsCorrect
+										? 'correct'
+										: 'incorrect'}
 								</Chip>
 								<Divider className='mb-4' />
 							</>

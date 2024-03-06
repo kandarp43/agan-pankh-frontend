@@ -23,7 +23,6 @@ export default function GoogleSignin({ ...props }) {
 	const { mutate } = useMutation(g_signin, {
 		onSuccess: (response) => {
 			authResponse.current = response.data.data.data
-			console.log({ response: authResponse.current })
 			if (authResponse.current?.isNew) {
 				onOpen()
 			} else {
@@ -47,7 +46,6 @@ export default function GoogleSignin({ ...props }) {
 				client_id:
 					'551543918721-pa8bnj7h29bl5bs984cjr9f1snflqf7l.apps.googleusercontent.com',
 				callback: async (response) => {
-					console.log(response.credential, 'G-token')
 					mutate(response.credential)
 				},
 			})
