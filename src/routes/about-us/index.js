@@ -25,7 +25,7 @@ export default function AboutUs() {
 					</p>
 					<p>- Dr. Hiren Jogi</p>
 					<p>- Dr. Yatri Tej Banugariya</p>
-					<p>- Mrs. Devika Haresh Vavadiya</p>
+					<p>- Mrs. Devika Haresh Vadaviya</p>
 					<p>- Mrs. Urvi Jagadish Sankharva</p>
 					<p>- CA Dhaval Bhojani</p>
 				</div>
@@ -44,7 +44,7 @@ export default function AboutUs() {
 					</p>
 					<p>- Dr. Hiren Jogi</p>
 					<p>- Dr. Yatri Tej Banugariya</p>
-					<p>- Mrs. Devika Haresh Vavadiya</p>
+					<p>- Mrs. Devika Haresh Vadaviya</p>
 					<p>- Mrs. Urvi Jagadish Sankharva</p>
 					<p>- CA Dhaval Bhojani</p>
 				</div>
